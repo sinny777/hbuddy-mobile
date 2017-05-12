@@ -15,6 +15,7 @@ import { DevicesPage } from '../devices/devices';
 export class PlaceAreasPage {
 
   private selectedPlace: any;
+  private selectedPlaceArea: any;
   private connectionOptions: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -22,7 +23,7 @@ export class PlaceAreasPage {
               public mqttProvider: MqttProvider) {
               this.selectedPlace = navParams.get('selectedPlace');
               if(!this.selectedPlace){
-                this.selectedPlace = this.sharedProvider.getData().selectedPlace;
+                this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
               }
   }
 
@@ -32,7 +33,7 @@ export class PlaceAreasPage {
       let placeTopic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/evt/gateway/fmt/json";
       this.connectionOptions.subscribeToTopic = placeTopic;
       this.mqttProvider.connectMQTT(this.connectionOptions);
-    }    
+    }
     this.getPlaceAreas(false, (err, placeAreas) =>{
       this.selectedPlace.areas = placeAreas;
     });
@@ -63,11 +64,13 @@ export class PlaceAreasPage {
 
   editPlaceArea(placeArea){
     console.log("IN editPlaceArea: >> ", placeArea);
+    this.selectedPlaceArea = placeArea;
   }
 
   viewPlaceArea(placeArea){
     console.log("IN viewPlaceArea: >> ", placeArea);
-    this.navCtrl.push(DevicesPage, {"selectedPlace": this.selectedPlace, "selectedPlaceArea":placeArea});
+    this.selectedPlaceArea = placeArea;
+    this.navCtrl.push(DevicesPage, {"selectedPlace": this.selectedPlace, "selectedPlaceArea": this.selectedPlaceArea});
   }
 
 

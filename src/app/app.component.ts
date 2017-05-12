@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController, LoadingController } from 'ionic-angular';
-import { Http } from '@angular/http';
+import { Nav, Platform, NavController, LoadingController, ToastController } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -10,8 +10,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { SettingsPage } from '../pages/settings/settings';
 import { ContactPage } from '../pages/contact/contact';
 
-import { AuthProvider } from '../providers/auth-provider';
-import { Storage } from '@ionic/storage';
+import { SharedProvider } from '../providers/shared-provider';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,41 +19,30 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
   @ViewChild('content') content: NavController;
-  // @ViewChild(Menu) menu: Menu;
 
   rootPage:any;
   loader: any;
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(private storage: Storage, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public authProvider: AuthProvider, public loadingCtrl: LoadingController, public http: Http) {
+  constructor(private network: Network, private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private sharedProvider: SharedProvider, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+      this.presentLoading();
       platform.ready().then(() => {
         statusBar.styleDefault();
         splashScreen.hide();
-        this.storage.ready().then(() => {
-            this.setupLocalStorage();
-        });
-
-        if (platform.is('ios')) {
-          console.log("I'm an iOS device!");
-        }
-
-        if (platform.is('android')) {
-          console.log("I'm an Android device!");
-        }
-
-      });
-
-      this.presentLoading();
-
-      this.authProvider.isUserLoggedIn().then((isLoggedIn) => {
-          if(isLoggedIn){
-              this.rootPage = PlacesPage;
-          }else{
-            this.rootPage = LoginPage;
+        this.sharedProvider.initStorage((err, resp)=>{
+          if(err){
+            console.log("ERROR IN initStorage: >> ", err);
           }
-          this.loader.dismiss();
+          this.handleNetwork();
+        });
       });
+
+      if(this.sharedProvider.getCurrentUser()){
+        this.rootPage = PlacesPage;
+      }else{
+        this.rootPage = LoginPage;
+      }
 
       this.pages = [
         {"title": "My Places", component: PlacesPage, icon: "home"},
@@ -62,36 +50,54 @@ export class MyApp {
         {"title": "Settings", component: SettingsPage, icon: "construct"},
         {"title": "Contact Us", component: ContactPage, icon: "mail"},
       ]
+
+      this.dismissLoading();
   }
 
-  setupLocalStorage(){
-    this.storage.clear().then(() => {
-      console.log('Local Storage Cleared ');
-      this.http.get('assets/data/demoData.json')
-        .map((res) => res.json())
-        .subscribe(data => {
-            this.storage.set("demoData", data.demoData);
-        }, (rej) => {console.error("Could not load local data", rej)});
-    });
-  }
-
-  presentLoading(){
-      this.loader = this.loadingCtrl.create({
-          content: "Please wait..."
+  handleNetwork(){
+      console.log("IN handleNetwork, Network.name: ");
+      this.network.onDisconnect().subscribe(() => {
+        console.log('network was disconnected :-(');
+        this.sharedProvider.setSessionData("network", "offline");
+        let toast = this.toastCtrl.create({
+            message: 'You are Offline !',
+            duration: 5000,
+            position: 'top'
+        });
+        toast.present();
       });
 
-      this.loader.present();
+      this.network.onConnect().subscribe(() => {
+        console.log('network connected!'); 
+        this.sharedProvider.setSessionData("network", "online");
+        setTimeout(() => {
+          if (this.network.type === 'wifi') {
+            console.log('we got a wifi connection, woohoo!');
+          }
+        }, 3000);
+      });
   }
 
   openPage(p){
     this.nav.setRoot(p.component);
   }
 
+  presentLoading(){
+      this.loader = this.loadingCtrl.create({
+          content: "Please wait..."
+      });
+      this.loader.present();
+  }
+
+  dismissLoading(){
+      this.loader.dismiss();
+  }
+
   logout(){
-    this.authProvider.logout(() => {
-        this.nav.setRoot(LoginPage);
-        console.log("User Logged Out Successfully >>>>>>> ");
-    });
+    this.sharedProvider.refreshSession();
+    this.sharedProvider.setCurrentUser(null);
+    console.log("User Logged Out Successfully >>>>>>> ");
+    this.nav.setRoot(LoginPage);
   }
 
 

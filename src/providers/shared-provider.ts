@@ -7,7 +7,8 @@ import { Storage } from '@ionic/storage';
 export class SharedProvider {
 
   private forDemo: boolean = false;
-  private sharedData: any;
+  private sessionData: any;
+  private currentUser: any;
 
   public CONFIG = {
                     API_BASE_URL: "http://granslive-web.mybluemix.net/api",
@@ -28,24 +29,84 @@ export class SharedProvider {
                   };
 
   constructor(private storage: Storage, private http: Http) {
-    console.log('Hello SharedProvider Provider');
-    this.sharedData = {};
+    this.sessionData = {};
   }
 
-  public setForDemoAccount(forDemo){
-    this.forDemo = forDemo;
+  public initStorage(cb){
+    this.storage.ready().then(() => {
+        this.setupLocalStorage(cb);
+    });
+    this.sessionData = {};
+    this.forDemo = false;
+  }
+
+  public setupLocalStorage(cb){
+    this.getDemoData("demo", (data)=>{
+        if(!data){
+          this.http.get('assets/data/app-data.json')
+            .map((res) => res.json())
+            .subscribe(data => {
+                this.storage.set("demo", data.demo);
+                cb(null, "SUCCESS");
+            }, (rej) => {
+              console.error("Could not load local data", rej)
+              cb(rej, null);
+            });
+        }else{
+            cb(null, "SUCCESS");
+        }
+    });
+  }
+
+  public setCurrentUser(user){
+    if(user && user.type && user.type == 'demo'){
+        this.forDemo = true;
+    }else{
+        this.forDemo = false;
+    }
+    this.currentUser = user;
+  }
+
+  public getCurrentUser(){
+    return this.currentUser;
   }
 
   public isDemoAccount(){
     return this.forDemo;
   }
 
-  public getData(){
-    return this.sharedData;
+  public setSessionData(key, data){
+    this.sessionData[key] = data;
   }
 
-  public refreshData(){
-    this.sharedData = {};
+  public getSessionData(key){
+    return this.sessionData[key];
+  }
+
+  public getStorageData(key, cb){
+    this.storage.get(key).then((data) => {
+          cb(data);
+          return data;
+       })
+  }
+
+  public refresh(cb){
+    this.storage.clear().then(() => {
+      console.log('Local Storage Cleared ');
+      this.http.get('assets/data/demoData.json')
+        .map((res) => res.json())
+        .subscribe(data => {
+            this.storage.set("demo", data.demo);
+        }, (rej) => {
+          console.error("Could not load local data", rej)
+        });
+    });
+
+    this.refreshSession();
+  }
+
+  public refreshSession(){
+    this.sessionData = {};
     this.forDemo = false;
   }
 

@@ -14,7 +14,7 @@ export class HbuddyProvider {
   constructor(private http: Http, private authProvider: AuthProvider, private sharedProvider: SharedProvider) {
     console.log("authProvider: >>>", authProvider.reqOptions);
     this.reqOptions = authProvider.reqOptions;
-    this.currentUser = this.authProvider.getCurrentUser();
+    this.currentUser = this.sharedProvider.getCurrentUser();
   }
 
   fetchUserGroups(userObj, cb){

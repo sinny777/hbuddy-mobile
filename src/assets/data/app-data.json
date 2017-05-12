@@ -1,5 +1,5 @@
 {
-  "demoData": {
+  "demo": {
     "currentUser": {"username": "demo", "password": "demo", "type": "demo"},
     "places": [
                 {"id":"place123","title": "My Demo Home", "description": "Home Place for demo purpose only..", "gatewayId": "abc123xyz45"},

@@ -7,7 +7,6 @@ import { SharedProvider } from './shared-provider';
 @Injectable()
 export class AuthProvider {
 
-    private currentUser: any;
     private headers: Headers;
     public reqOptions: RequestOptions;
 
@@ -24,57 +23,43 @@ export class AuthProvider {
     this.reqOptions = new RequestOptions({headers: this.headers});
   }
 
-  public isUserLoggedIn(){
-    return new Promise((resolve) => {
-        resolve(this.currentUser != null);
-    });
-  }
-
-  public getCurrentUser(){
-    return this.currentUser;
-  }
-
   public login(credentials, cb){
     // console.log("Credentials: >> ", JSON.stringify(credentials));
     this.refreshHeaders();
     if(credentials.email == "demo" && credentials.password == "demo"){
-      // this.currentUser = {username: "demo", password: "demo", type: "demo"};
       this.sharedProvider.getDemoData("currentUser", (dummyUser)=>{
-          this.currentUser = dummyUser;
-          console.log("this.currentUser Data: >>>> ", this.currentUser);
-          cb(null, this.currentUser);
-
+          this.sharedProvider.setCurrentUser(dummyUser);
+          console.log("this.currentUser Data: >>>> ", dummyUser);
+          cb(null, dummyUser);
       });
       return false;
     }
 
       return this.http.post(this.sharedProvider.CONFIG.API_BASE_URL +'/MyUsers/login', credentials, this.reqOptions)
       .subscribe(resp => {
-          this.currentUser = resp.json();
-          this.findUserById(cb);
-          // cb(null, this.currentUser);
+          let user = resp.json();
+          this.headers.append("Authorization", user.id);
+          this.reqOptions = new RequestOptions({headers: this.headers});
+          this.findUserById(user.userId, (err, profile)=>{
+              if(profile){
+                user.profile = profile;
+              }
+              cb(err, user);
+          });
       }, (err) => {
         console.log("Login Failed:>> ", err);
         cb(err, null);
       });
   }
 
-  public logout(cb){
-    this.sharedProvider.refreshData();
-    cb();
-  }
-
-  private findUserById(cb){
-    if(!this.currentUser){
-        cb("No User Found", null);
+  private findUserById(userId, cb){
+    if(!userId){
+        cb(new Error("No User Found"), null);
     }else{
-        this.headers.append("Authorization", this.currentUser.id);
-        this.reqOptions = new RequestOptions({headers: this.headers});
-        let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/MyUsers/"+this.currentUser.userId;
+        let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/MyUsers/"+userId;
         return this.http.get(GET_URL, this.reqOptions)
         .subscribe(resp => {
-            this.currentUser.profile = resp.json();
-            cb(null, this.currentUser);
+            cb(null, resp.json());
         }, (err) => {
           console.log("Login Failed:>> ", err);
           cb(err, null);

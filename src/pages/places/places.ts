@@ -33,29 +33,31 @@ export class PlacesPage {
   ionViewDidLoad() {
       console.log('ionViewDidLoad Places');
       this.menuCtrl.swipeEnable(true, "menu-left");
-      this.fetchUserPlaces(false, (err, places) =>{
-        this.places = places;
-      });
+      if(!this.places){
+          this.fetchUserPlaces(false, (err, places) =>{
+              this.places = places;
+          });
+      }
   }
 
   doRefresh(refresher){
     console.log("IN doRefresh for Places: >> ");
     this.fetchUserPlaces(true, (err, places) =>{
-      this.places = places;
-      refresher.complete();
+        this.places = places;
+        refresher.complete();
     });
   }
 
   fetchUserPlaces(refresh, cb){
-      console.log("IN fetchUserPlaces for: ", this.sharedProvider.getData().currentUser);
-      if(this.sharedProvider.getData().currentUser.places && !refresh){
-        cb(null, this.sharedProvider.getData().currentUser.places);
+      console.log("IN fetchUserPlaces for: ", this.sharedProvider.getCurrentUser());
+      if(this.sharedProvider.getSessionData("places") && !refresh){
+          cb(null, this.sharedProvider.getSessionData("places"));
       }else{
-        this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getData().currentUser, (err, places) => {
-            console.log("Fetched User Places:  ", places);
-            this.sharedProvider.getData().currentUser.places = places;
-            cb(err, places);
-        });
+          this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getCurrentUser(), (err, places) => {
+              console.log("Fetched User Places:  ", places);
+              this.sharedProvider.setSessionData("places", places);
+              cb(err, places);
+          });
       }
   }
 
@@ -68,7 +70,7 @@ export class PlacesPage {
   showEditPlace(place){
       console.log("IN editPlace: >> ", place);
       this.selectedPlace = place;
-      this.sharedProvider.getData().selectedPlace = place;
+      this.sharedProvider.setSessionData("selectedPlace", place);
       this.showAddUpdatePlace = true;
       this.showPlaces = false;
       // this.navCtrl.setRoot(DashboardPage, {"selectedPlace": place});
@@ -80,7 +82,7 @@ export class PlacesPage {
 
   viewPlace(place){
       console.log("IN viewPlace: >> ", place);
-      this.sharedProvider.getData().selectedPlace = place;
+      this.sharedProvider.setSessionData("selectedPlace", place);
       this.navCtrl.setRoot(DashboardPage, {"selectedPlace": place});
   }
 

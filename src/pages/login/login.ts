@@ -6,12 +6,7 @@ import { SharedProvider } from '../../providers/shared-provider';
 
 import { PlacesPage } from '../places/places';
 
-/**
- * Generated class for the Login page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -46,12 +41,7 @@ export class LoginPage {
         }
         if(user){
             console.log("SUCCESSFULLY LOGGED IN >>> ", user);
-            if(user.type && user.type == "demo"){
-              this.sharedProvider.setForDemoAccount(true);
-            }else{
-              this.sharedProvider.setForDemoAccount(false);
-            }
-            this.sharedProvider.getData().currentUser = user;
+            this.sharedProvider.setCurrentUser(user);
             this.nav.setRoot(PlacesPage, {});
         }else{
           console.log("No Data for User: >>> ", this.credentials);

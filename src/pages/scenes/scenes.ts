@@ -14,7 +14,7 @@ export class ScenesPage {
   selectedPlace: any;
 
   constructor(public navCtrl: NavController, public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider) {
-    this.selectedPlace = this.sharedProvider.getData().selectedPlace;
+    this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
   }
 
   ionViewDidLoad() {
