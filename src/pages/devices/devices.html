@@ -1,0 +1,33 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>
+      {{selectedPlaceArea.title}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="background">
+
+  <ion-list *ngFor="let board of selectedPlaceArea.boards">
+    <ion-item *ngFor="let device of board.devices">
+        <ion-avatar item-left>
+            <ion-icon name="flaticon-{{device.type}}" color="device{{device.status}}"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          {{device.title}} |
+          <button ion-button icon-center clear (click)="editDevice(device);">
+              <ion-icon name="create" ></ion-icon>
+          </button>
+          <p>{{device.updatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
+        </ion-label>
+
+        <ion-toggle [(ngModel)]="device.value" (click)="deviceChanged(board, device);"></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

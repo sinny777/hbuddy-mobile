@@ -1,0 +1,58 @@
+page-scenes {
+
+  .background {
+    background: url('../assets/images/time1.jpg') center;
+    background-size: cover;
+  }
+
+  .right{
+    text-align: right;
+  }
+
+  .small{
+    font-size: 10px;
+    color: #fff
+  }
+
+  .scroll-content{
+    padding: 3px !important;
+  }
+
+/*
+  .toolbar {
+    .toolbar-background {
+      background: transparent;
+    }
+
+    .toolbar-title{
+      color: #fff;
+    }
+
+    .bar-buttons{
+      color: #fff;
+    }
+  }
+*/
+
+  .card{
+    background: transparentize(#9BB4E3, 0.95);
+
+    .card-title{
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding-left: 5px;
+      padding-right: 5px
+    }
+
+    .card-content{
+      padding: 2px;
+    }
+
+    p{
+      font-size: 13px;
+      color: #fff;
+    }
+
+  }
+}

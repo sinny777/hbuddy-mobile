@@ -1,0 +1,70 @@
+
+<ion-header >
+  <ion-navbar color="primary">
+    <ion-buttons start>
+        <button ion-button menuToggle="left" icon-only>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    </ion-buttons>
+
+    <ion-title>
+      {{selectedPlace.title}}
+    </ion-title>
+
+    <ion-buttons end>
+        <button ion-button icon-only class="light-bold" (click)="showAddNewPlaceArea();">
+           <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="background">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <ion-fab top right edge>
+     <button ion-fab mini (click)="addPlaceArea();">
+        <ion-icon name="add"></ion-icon>
+     </button>
+  </ion-fab> -->
+
+        <ion-card *ngFor="let area of selectedPlace.areas">
+          <ion-card-content>
+            <ion-card-title>
+              {{area.title}}
+              <span class="small" style="float: right">
+                <ion-col col-3 class="right"><ion-icon name="thermometer" color="danger"></ion-icon> 24 &deg;C</ion-col>
+                <ion-col col-3 class="right"><ion-icon name="water" color="primary"></ion-icon> 54%</ion-col>
+              </span>
+            </ion-card-title>
+
+            <p>{{area.description}}</p>
+
+            <!-- <ion-grid>
+                <ion-row class="small">
+                  <ion-col col-6><ion-icon name="clock"></ion-icon>Just Now</ion-col>
+                </ion-row>
+            </ion-grid> -->
+
+          </ion-card-content>
+
+              <ion-row>
+                <ion-col col-6>
+                  <button ion-button icon-center clear (click)="editPlaceArea(area);">
+                    <ion-icon name="create"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col col-6>
+                  <button ion-button icon-center clear style="float: right;" (click)="viewPlaceArea(area);">
+                    <ion-icon name="eye"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+
+      </ion-card>
+</ion-content>

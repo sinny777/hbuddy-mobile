@@ -1,0 +1,64 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>
+      Scenes
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="background">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+      <ion-card *ngFor="let scene of selectedPlace.scenes">
+          <ion-card-content>
+            <ion-card-title>
+              {{scene.title}}
+              <span class="small" style="float: right"><ion-icon name="clock"></ion-icon>&nbsp;&nbsp;{{scene.settings.startTime}}</span>
+            </ion-card-title>
+
+            <ion-grid>
+
+                <ion-row *ngIf="scene.settings.repeat && scene.settings.repeat.length > 0">
+                    <ion-col col-12>
+                        <div class="small">
+            				    		<strong>Repeat: </strong>
+            				    		<span *ngFor="let day of scene.settings.repeat" >
+            				    			<span *ngIf="day == 0">Sunday | </span>
+            				    			<span *ngIf="day == 1">Monday | </span>
+            				    			<span *ngIf="day == 2">Tuesday | </span>
+            				    			<span *ngIf="day == 3">Wednesday | </span>
+            				    			<span *ngIf="day == 4">Thursday | </span>
+            				    			<span *ngIf="day == 5">Friday | </span>
+            				    			<span *ngIf="day == 6">Saturday </span>
+            				    		</span>
+          						  </div>
+                    </ion-col>
+              </ion-row>
+
+            </ion-grid>
+
+          </ion-card-content>
+
+              <ion-row>
+                <ion-col col-6>
+                  <button ion-button icon-center clear (click)="editScene(scene);">
+                    <ion-icon name="create"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col col-6>
+                  <button ion-button icon-center clear style="float: right;" (click)="executeScene(scene);">
+                    <ion-icon name="play"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+
+      </ion-card>
+
+</ion-content>

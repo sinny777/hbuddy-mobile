@@ -1,0 +1,88 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 18/04/2016 14:25
+    */
+
+@font-face {
+     font-family: "Flaticon";
+     src: url('../assets/fonts/Flaticon.eot?ls340j');
+     src: url('../assets/fonts/Flaticon.eot?ls340j#iefix') format('embedded-opentype'),
+     url('../assets/fonts/Flaticon.ttf?ls340j') format('truetype'),
+     url('../assets/fonts/Flaticon.woff?ls340j') format('woff'),
+     url('../assets/fonts/Flaticon.svg?ls340j#Flaticon') format('svg');
+     font-weight: normal;
+     font-style: normal;
+}
+
+@mixin makeIcon($arg, $val) {
+    .ion-ios-#{$arg}:before ,
+    .ion-ios-#{$arg}-circle:before ,
+    .ion-ios-#{$arg}-circle-outline:before ,
+    .ion-ios-#{$arg}-outline:before ,
+    .ion-md-#{$arg}:before ,
+    .ion-md-#{$arg}-circle:before ,
+    .ion-md-#{$arg}-circle-outline:before ,
+    .ion-md-#{$arg}-outline:before  {
+        font-family: "Flaticon" !important;
+        content: $val;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+@include makeIcon(flaticon-ac, "\f100");
+@include makeIcon(flaticon-balcony, "\f101");
+@include makeIcon(flaticon-bath-room, "\f102");
+@include makeIcon(flaticon-bed-room, "\f103");
+@include makeIcon(flaticon-bulb, "\f104");
+@include makeIcon(flaticon-camera, "\f105");
+@include makeIcon(flaticon-cfl, "\f106");
+@include makeIcon(flaticon-cieling-fan, "\f107");
+@include makeIcon(flaticon-coffee-machine, "\f108");
+@include makeIcon(flaticon-cooler, "\f109");
+@include makeIcon(flaticon-device, "\f10a");
+@include makeIcon(flaticon-door-close, "\f10b");
+@include makeIcon(flaticon-door-open, "\f10c");
+@include makeIcon(flaticon-fan, "\f10d");
+@include makeIcon(flaticon-filter, "\f10e");
+@include makeIcon(flaticon-fridge, "\f10f");
+@include makeIcon(flaticon-god, "\f110");
+@include makeIcon(flaticon-hanging-lamp, "\f111");
+@include makeIcon(flaticon-humidity, "\f112");
+@include makeIcon(flaticon-kitchen, "\f113");
+@include makeIcon(flaticon-living-room, "\f114");
+@include makeIcon(flaticon-meditation, "\f115");
+@include makeIcon(flaticon-microwave, "\f116");
+@include makeIcon(flaticon-motor, "\f117");
+@include makeIcon(flaticon-music, "\f118");
+@include makeIcon(flaticon-pooja, "\f119");
+@include makeIcon(flaticon-socket, "\f11a");
+@include makeIcon(flaticon-speakers, "\f11b");
+@include makeIcon(flaticon-store, "\f11c");
+@include makeIcon(flaticon-table-lamp, "\f11d");
+@include makeIcon(flaticon-temperature, "\f11e");
+@include makeIcon(flaticon-tv, "\f11f");
+@include makeIcon(flaticon-washing-machine, "\f120");
+@include makeIcon(flaticon-window, "\f121");
+
+/*
+.fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+*/

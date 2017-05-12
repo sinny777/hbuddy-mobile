@@ -1,0 +1,54 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only >
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title >
+      Gateway Settings
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <!-- <ion-list-header>Configurations</ion-list-header> -->
+    <ion-item>
+      <ion-avatar item-left>
+          <ion-icon name="bluetooth" item-left></ion-icon>
+      </ion-avatar>
+      <ion-label class="small">
+        Connect Gateway
+      </ion-label>
+      <ion-select class="small" [(ngModel)]="selectedPeripheral" (ionChange)="bleDeviceSelected();">
+        <ion-option *ngFor="let bleDevice of bleDevices" value="{{bleDevice.id}}">
+            {{bleDevice.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-card *ngIf="gatewayConnected" >
+    <ion-card-header>
+      WiFi Credentials
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line>
+        <ion-item>
+          <ion-input type="text" placeholder="WiFi SSID" [(ngModel)]="configurations.wifi.ssid"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" placeholder="WiFi Password" [(ngModel)]="configurations.wifi.password"></ion-input>
+        </ion-item>
+        <button ion-button block outline color="light" (click)='updateGatewayWifi();'>
+          Submit
+        </button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-spinner *ngIf="isScanning==true" name="circles"></ion-spinner>
+
+</ion-content>

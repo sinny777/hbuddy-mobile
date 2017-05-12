@@ -1,0 +1,50 @@
+
+<ion-menu side="left" id="menu-left" [content]="content">
+
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+    <ion-content>
+        <ion-list>
+             <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
+                <!-- <i class="icon {{p.icon}}"></i>{{p.title}} -->
+                <ion-icon name="{{p.icon}}"></ion-icon><span class="menu-label">{{p.title}}</span>
+                <!-- <ion-icon name="ion-settings"></ion-icon> -->
+             </button>
+        </ion-list>
+        <hr />
+              <button ion-item menuClose (click)="logout()">
+                 <ion-icon name="power"></ion-icon><span class="menu-label">Logout</span>
+              </button>
+
+    </ion-content>
+
+</ion-menu>
+
+<ion-nav id="nav" #content [root]="rootPage" swipeBackEnabled="false"></ion-nav>
+
+<ion-menu side="right" id="menu-right" [content]="content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+      <ion-content>
+              <ion-list>
+                  <button ion-item menuClose (click)="addNewPlace()">
+                      <ion-icon name="add" item-left> </ion-icon>
+                      Add Place
+                  </button>
+                  <button ion-item menuClose (click)="showPlacesSettings()">
+                      <ion-icon name="settings" item-left> </ion-icon>
+                      Settings
+                  </button>
+                  <button ion-item  menuClose="menu-right" detail-none>
+                      Close Right Menu
+                  </button>
+             </ion-list>
+      </ion-content>
+</ion-menu>

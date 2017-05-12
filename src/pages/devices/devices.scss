@@ -1,0 +1,67 @@
+page-devices {
+
+  .background {
+    background: url('../assets/images/bg23.jpg') center;
+    background-size: cover;
+  }
+
+  .right{
+    text-align: right;
+  }
+
+  .small{
+    font-size: 10px;
+    color: #fff
+  }
+
+  .scroll-content{
+    padding: 3px !important;
+  }
+
+/*
+  .toolbar {
+    .toolbar-background {
+      background: transparent;
+    }
+
+    .toolbar-title{
+      color: #fff;
+    }
+
+    .bar-buttons{
+      color: #fff;
+    }
+  }
+*/
+
+  .item{
+    background: transparentize(#9BB4E3, 0.95);
+    color: #fff;
+
+    .item-content{
+      padding: 2px;
+    }
+
+    ion-avatar{
+        min-height: 20px;
+        font-size: 1.5em
+    }
+
+    ion-label{
+      font-size: 14px
+    }
+
+    ion-label .button{
+      height: 1.2em;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    p{
+      font-size: 10px;
+      color: #fff;
+    }
+
+  }
+  
+}

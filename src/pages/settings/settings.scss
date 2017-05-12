@@ -1,0 +1,85 @@
+page-settings {
+
+  .background {
+    background: url('../assets/images/bg5.jpg') center;
+    background-size: cover;
+  }
+
+  .right{
+    text-align: right;
+  }
+
+  .small{
+    font-size: 11px;
+    color: #fff
+  }
+
+  .scroll-content{
+    padding: 3px !important;
+    color: #fff;
+  }
+
+
+  .toolbar {
+    .toolbar-background {
+      background: transparent;
+    }
+
+    .toolbar-title{
+      color: #fff;
+    }
+
+    .bar-buttons{
+      color: #fff;
+    }
+  }
+
+
+  .item{
+    // background: transparentize(#9BB4E3, 0.95);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+
+    .item-content{
+      padding: 2px;
+    }
+
+    ion-avatar{
+        min-height: 20px;
+        font-size: 1.5em
+    }
+
+    ion-label{
+      font-size: 14px
+    }
+
+    ion-label .button{
+      height: 1.2em;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    p{
+      font-size: 10px;
+      color: #fff;
+    }
+
+  }
+
+  .card{
+    background: transparentize(#9BB4E3, 0.70);
+    max-height: 150px;
+
+    .card-title{
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    p{
+      font-size: 13px;
+      color: #fff;
+    }
+  }
+
+}

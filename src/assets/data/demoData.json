@@ -1,0 +1,197 @@
+{
+  "demoData": {
+    "currentUser": {"username": "demo", "password": "demo", "type": "demo"},
+    "places": [
+                {"id":"place123","title": "My Demo Home", "description": "Home Place for demo purpose only..", "gatewayId": "abc123xyz45"},
+                {"id":"place456","title": "My Demo Shop", "description": "My Shop for demo purpose only..", "gatewayId": "xyz321abc45"}
+    ],
+    "placeAreas": [
+                        {"title": "Bedroom1", "description": "My Bedroom"},
+                        {"title": "Bedroom2", "description": "Kids Bedroom"},
+                        {"title": "Living Room", "description": "Living Room"},
+                        {"title": "Kitchen", "description": "Our Kitchen"},
+                        {"title": "Bathroom1", "description": "Our Bedroom1 Bathroom"}
+    ],
+    "boards":[
+                {
+                  "title": "6 Digital and 3 Analog Switches Board",
+                  "description": "Switch Board with 6 Digital and 3 Analog switches",
+                  "connectedToId":"6711ac82cff06237794519527e6f1ea4",
+                  "connectedToType":"PlaceArea",
+                  "gatewayId":"000000008c0be72b",
+                  "type":"SWITCH_BOARD",
+                  "devices": [
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":1,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Left Lamp",
+                      "type":"table-lamp",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":2,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Right Lamp",
+                      "type":"table-lamp",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":3,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Socket",
+                      "type":"socket",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":4,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"AC",
+                      "type":"ac",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":5,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"CFL Bulb",
+                      "type":"cfl",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":false,
+                      "description":"Digital Switch",
+                      "deviceIndex":6,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Mosquito Replent",
+                      "type":"socket",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":true,
+                      "description":"Digital Switch",
+                      "deviceIndex":7,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Fan",
+                      "type":"fan",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":true,
+                      "description":"Digital Switch",
+                      "deviceIndex":8,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"LED Light",
+                      "type":"led",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    },
+                    {
+                      "analog":true,
+                      "description":"Digital Switch",
+                      "deviceIndex":9,
+                      "parentId":"SWB-16724121742",
+                      "status":"OFF",
+                      "title":"Ceiling Fan",
+                      "type":"fan",
+                      "updatedAt":"2017-05-10T12:18:22.780Z",
+                      "value": 0
+                    }
+                  ]
+                }
+    ],
+    "scenes": [
+                {
+                    "areas": [
+                      {
+                          "areaType": "PlaceArea",
+                          "areaId": "99a53ac8673ddcf342ad7950d5ee23cd",
+                          "areaTitle": "Living Room",
+                          "devices": [
+                                    {
+                                      "parentId": "SB-B1379",
+                                      "title": "Music",
+                                      "description": "Analog Switch",
+                                      "status": "ON",
+                                      "value": 1,
+                                      "type": "music",
+                                      "analog": true,
+                                      "analogValue": 10,
+                                      "deviceIndex": 7,
+                                      "added": true
+                                    },
+                                    {
+                                      "parentId": "SB-B1379",
+                                      "title": "Small Bulb",
+                                      "description": "Digital Switch",
+                                      "status": "OFF",
+                                      "value": 0,
+                                      "type": "bulb",
+                                      "analog": false,
+                                      "deviceIndex": 2,
+                                      "added": true
+                                    },
+                                    {
+                                      "parentId": "SB-B1379",
+                                      "title": "AC",
+                                      "description": "Digital Switch",
+                                      "status": "OFF",
+                                      "value": 0,
+                                      "type": "ac",
+                                      "analog": false,
+                                      "deviceIndex": 3,
+                                      "added": true
+                                    }
+                                  ]
+                       },
+                       {
+                          "areaType": "PlaceArea",
+                          "areaId": "6711ac82cff06237794519527e6f1ea4",
+                          "areaTitle": "BedRoom1",
+                          "devices": []
+                        }
+                    ],
+                    "description": "Good Morning Scene that switches on the motor for filling water tank along with other devices status.",
+                    "placeId": "place123",
+                    "settings": {
+                    "startTime": "6:05:00",
+                    "endTime": "23:59:00",
+                    "repeat": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                    ]
+                    },
+                      "title": "Good Morning",
+                      "type": "TIME",
+                      "status": "ACTIVE"
+                    }
+    ]
+  }
+}

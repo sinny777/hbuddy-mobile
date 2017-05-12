@@ -1,0 +1,45 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only >
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title >
+      Settings
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="background">
+  <ion-list>
+    <!-- <ion-list-header>Configurations</ion-list-header> -->
+
+    <button ion-item (click)="showConfigureGateway()">
+        <ion-avatar item-left>
+            <ion-icon name="cube"></ion-icon>
+        </ion-avatar>
+        Configure Gateway
+    </button>
+
+    <ion-item>
+      <ion-avatar item-left>
+          <ion-icon name="notifications" item-left></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        Notifications
+      </ion-label>
+      <ion-toggle [(ngModel)]="configurations.notifications" (click)="toggleNotifications();"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-avatar item-left>
+          <ion-icon name="cloud-upload" item-left></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        Sync With Cloud
+      </ion-label>
+      <ion-toggle [(ngModel)]="configurations.syncWithCloud" (click)="toggleSyncWithCloud();"></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

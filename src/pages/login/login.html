@@ -1,0 +1,38 @@
+<ion-content class="background">
+
+  <div class="logo">
+      <h2>hBuddy</h2>
+      <span>Powered By Hukam</span>
+  </div>
+  <ion-card>
+		<ion-card-header>
+			<!-- hBuddy Login -->
+		</ion-card-header>
+		<ion-card-content>
+			<ion-list no-line>
+				<ion-item>
+					<ion-input type="text" placeholder="Username" [(ngModel)]="credentials.email"></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-input type="password" placeholder="Password" [(ngModel)]="credentials.password"></ion-input>
+				</ion-item>
+				<a class="small">Forgot your login detail? <b>Get help signing in</b></a>
+        <br /><br />
+				<button ion-button block outline color="light" (click)='handleLogin();'>
+          Log in
+        </button>
+				<p>OR</p>
+
+        <button ion-button block color="google">
+					<ion-icon name="logo-google"></ion-icon> Login with google
+				</button>
+
+				<button ion-button block color="facebook">
+					<ion-icon name="logo-facebook"></ion-icon> Login with facebook
+				</button>
+
+			</ion-list>
+		</ion-card-content>
+	</ion-card>
+	<button class="bottom small" ion-button clear full color="light">Don't have an account? Sign up</button>
+</ion-content>

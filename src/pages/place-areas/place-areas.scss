@@ -1,0 +1,63 @@
+page-place-areas {
+
+  .background {
+		background: url('../assets/images/room3.jpg') center;
+    background-size: cover;
+	}
+
+  .bar-buttons{
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .light-bold{
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px
+  }
+
+  .right{
+    text-align: right;
+  }
+
+  .small{
+    font-size: 11px;
+    color: #fff
+  }
+
+  .scroll-content{
+    padding: 3px !important;
+  }
+
+/*
+  .toolbar {
+    .toolbar-background {
+      background: transparent;
+    }
+
+    .toolbar-title{
+      color: #fff;
+    }
+
+  }
+*/
+
+  .card{
+    // background: transparentize(#9BB4E3, 0.70);
+    background: rgba(0, 0, 0, 0.5);
+    max-height: 150px;
+
+    .card-title{
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    p{
+      font-size: 11px;
+      color: #fff;
+    }
+
+  }
+
+}

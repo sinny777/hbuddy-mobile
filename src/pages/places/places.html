@@ -1,0 +1,103 @@
+
+<ion-header *ngIf="showPlaces">
+  <ion-navbar>
+        <ion-buttons start>
+            <button ion-button menuToggle="left" icon-only>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>
+          My Places
+        </ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only class="light-bold" (click)="showAddNewPlace();">
+               <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-header *ngIf="showAddUpdatePlace">
+  <ion-toolbar>
+    <ion-title>
+      Add New Place
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="background">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+<div *ngIf="showPlaces">
+  <ion-card *ngFor="let place of places" >
+      <!-- <img src="../assets/images/room3.jpg"/> -->
+      <ion-card-content class="places-card">
+        <ion-card-title>
+          {{place.title}}
+          </ion-card-title>
+        <p>
+          {{place.description}}
+        </p>
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button icon-center clear style="float: left;" (click)="showEditPlace(place);">
+            <ion-icon name="create"></ion-icon>
+            <!-- <div>Edit</div> -->
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button icon-center clear style="float: right;" (click)="viewPlace(place);">
+            <ion-icon name="eye"></ion-icon>
+            <!-- <div>View</div> -->
+          </button>
+        </ion-col>
+
+      </ion-row>
+
+  </ion-card>
+</div>
+
+  <ion-card *ngIf="showAddUpdatePlace">
+    <ion-card-header>
+      <!-- Add/Update Place -->
+    </ion-card-header>
+    <ion-card-content>
+        <ion-list no-line>
+            <ion-item>
+              <ion-label stacked>Gateway Serial No</ion-label>
+              <ion-input type="text" [(ngModel)]="selectedPlace.gatewayId"></ion-input>
+            </ion-item>
+    				<ion-item>
+              <ion-label stacked>Place Title</ion-label>
+    					<ion-input type="text" [(ngModel)]="selectedPlace.title"></ion-input>
+    				</ion-item>
+    				<ion-item>
+              <ion-label stacked >Description</ion-label>
+    					<ion-textarea type="text" [(ngModel)]="selectedPlace.description"></ion-textarea>
+    				</ion-item>
+
+            <ion-row>
+                <ion-col>
+            				<button ion-button block outline  (click)='addOrUpdatePlace();'>
+                      Submit
+                    </button>
+                </ion-col>
+                <ion-col>
+                    <button ion-button block outline  (click)='dismiss();'>
+                      Cancel
+                    </button>
+                </ion-col>
+            </ion-row>
+
+  			</ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
