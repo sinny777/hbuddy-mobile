@@ -26,7 +26,7 @@ export class LoginPage {
   }
 
   errorAlert(_message) {
-      let alert = this.alertCtrl.create({
+      let alert: any = this.alertCtrl.create({
         title: 'ERROR',
         subTitle: _message,
         buttons: ['OK']
@@ -35,19 +35,91 @@ export class LoginPage {
     }
 
   handleLogin(){
+    this.sharedProvider.presentLoading("Please wait...");
     this.authProvider.login(this.credentials, (err, user) => {
         if(err){
           this.errorAlert("Invalid Credentials Entered !");
         }
         if(user){
             console.log("SUCCESSFULLY LOGGED IN >>> ", user);
-            this.sharedProvider.setCurrentUser(user);
-            this.nav.setRoot(PlacesPage, {});
+            if(!user.type){
+              user.type = "hukam";
+            }
+            this.authProvider.fetchUserSettingsById(user.userId, (err, userSettings) => {
+              user.settings = userSettings;
+              console.log("\n\nUser with userSettings: >>> ", user);
+              this.sharedProvider.setCurrentUser(user);
+              this.updateDeviceRegistrationId();
+              this.sharedProvider.dismissLoading();
+              this.nav.setRoot(PlacesPage, {});
+            });
         }else{
           console.log("No Data for User: >>> ", this.credentials);
         }
     });
+  }
 
+  handleGoogleLogin(){
+      this.authProvider.handleGoogleLogin((err, user) => {
+        if(err){
+          console.log("Erron in handleGoogleLogin: >> ", err);
+          this.errorAlert("Erron in Google Login !");
+          return false;
+        }
+        console.log("SUCCESSFULLY LOGGED IN >>> ", JSON.stringify(user));
+        if(!user.type){
+          user.type = "google";
+        }
+
+        let userId: string = user.id;
+        if(user.userId){
+          userId = user.userId;
+        }
+        this.authProvider.fetchUserSettingsById(userId, (err, userSettings) => {
+          user.settings = userSettings;
+          console.log("\n\nUser with userSettings: >>> ", user);
+          this.sharedProvider.setCurrentUser(user);
+          this.updateDeviceRegistrationId();
+          this.nav.setRoot(PlacesPage, {});
+        });
+      });
+  }
+
+  updateDeviceRegistrationId(){
+      let user: any = this.sharedProvider.getCurrentUser();
+      let registrationId: string = this.sharedProvider.getSessionData("registrationId");
+      if(!registrationId){
+        console.log("No registrationId for user: ", user);
+        return false;
+      }
+      if(user.userSettings){
+        for(let setting of user.userSettings){
+          if(!setting.registrationId || setting.registrationId != registrationId){
+              setting.registrationId = registrationId;
+              setting.timestamp = new Date();
+              this.authProvider.saveUserSettings(setting, (err, savedSetting) =>{
+                  console.log("Updated UserSettings: >>> ", savedSetting);
+              });
+          }else{
+              console.log("Device registrationId is still the same: >> ", registrationId);
+          }
+        }
+      }else{
+        user.userSettings = [];
+        let setting: any = {};
+        setting.userId = user.id;
+        if(user.userId){
+            setting.userId = user.userId;
+        }
+        setting.timestamp = new Date();
+        setting.registrationId = registrationId;
+        setting.notify = true;
+        setting.syncWithCloud = true;
+        this.authProvider.saveUserSettings(setting, (err, savedSetting)=>{
+            console.log("Created UserSettings: >>> ", savedSetting);
+            user.userSettings.push(savedSetting);
+        });
+      }
   }
 
   ionViewDidLoad() {

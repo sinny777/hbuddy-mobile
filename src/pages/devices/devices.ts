@@ -29,8 +29,10 @@ export class DevicesPage {
         let msg: any = JSON.parse(message.payloadString);
         this.refreshBoard(msg);
     });
+    this.sharedProvider.presentLoading("Fetching devices...");
     this.fetchBoardsAndDevices(this.selectedPlaceArea, false, (err, boards) => {
         this.selectedPlaceArea.boards = boards;
+        this.sharedProvider.dismissLoading();
     });
   }
 

@@ -34,8 +34,10 @@ export class PlaceAreasPage {
       this.connectionOptions.subscribeToTopic = placeTopic;
       this.mqttProvider.connectMQTT(this.connectionOptions);
     }
+    this.sharedProvider.presentLoading("Fetching place areas...");
     this.getPlaceAreas(false, (err, placeAreas) =>{
       this.selectedPlace.areas = placeAreas;
+      this.sharedProvider.dismissLoading();
     });
   }
 

@@ -19,8 +19,10 @@ export class ScenesPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Scenes: ', this.selectedPlace);
+    this.sharedProvider.presentLoading("Fetching scenes...");
     this.fetchScenes(false, (err, scenes) => {
         this.selectedPlace.scenes = scenes;
+        this.sharedProvider.dismissLoading();
     });
   }
 

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "874807563899",
+    "firebase_url": "https://hukam-157906.firebaseio.com",
+    "project_id": "hukam-157906",
+    "storage_bucket": "hukam-157906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874807563899:android:18a4ac3875bd57a7",
+        "android_client_info": {
+          "package_name": "com.ionicframework.hbuddymobilev2636663"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874807563899-pvbcn3a4pnl00mdd353nm5cggtl4inub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ionicframework.hbuddymobilev2636663",
+            "certificate_hash": "2b47bea605243be7fc6ef0b257e29dfe3abf338b"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA36DRmqOku0jbSxEuQaApiiCqnUyLD8DA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874807563899-330tu0d1vec4vkbbu9l3tefk8e231q4n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ionicframework.hbuddymobilev2636663"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

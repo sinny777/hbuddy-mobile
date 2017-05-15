@@ -23,12 +23,12 @@
 
     <ion-item>
       <ion-avatar item-left>
-          <ion-icon name="notifications" item-left></ion-icon>
+          <ion-icon name="notify" item-left></ion-icon>
       </ion-avatar>
       <ion-label>
         Notifications
       </ion-label>
-      <ion-toggle [(ngModel)]="configurations.notifications" (click)="toggleNotifications();"></ion-toggle>
+      <ion-toggle [(ngModel)]="userSetting.notifications" (click)="toggleNotifications();"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-avatar item-left>
@@ -37,7 +37,7 @@
       <ion-label>
         Sync With Cloud
       </ion-label>
-      <ion-toggle [(ngModel)]="configurations.syncWithCloud" (click)="toggleSyncWithCloud();"></ion-toggle>
+      <ion-toggle [(ngModel)]="userSetting.syncWithCloud" (click)="toggleSyncWithCloud();"></ion-toggle>
     </ion-item>
 
   </ion-list>

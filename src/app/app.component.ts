@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController, LoadingController, ToastController } from 'ionic-angular';
+import { Nav, Platform, NavController, ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -10,6 +10,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { SettingsPage } from '../pages/settings/settings';
 import { ContactPage } from '../pages/contact/contact';
 
+import { AuthProvider } from '../providers/auth-provider';
 import { SharedProvider } from '../providers/shared-provider';
 
 @Component({
@@ -25,8 +26,8 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(private network: Network, private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private sharedProvider: SharedProvider, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
-      this.presentLoading();
+  constructor(private network: Network, private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private sharedProvider: SharedProvider, private authProvider: AuthProvider, private toastCtrl: ToastController) {
+      this.sharedProvider.presentLoading("Please wait...");
       platform.ready().then(() => {
         statusBar.styleDefault();
         splashScreen.hide();
@@ -35,6 +36,7 @@ export class MyApp {
             console.log("ERROR IN initStorage: >> ", err);
           }
           this.handleNetwork();
+          this.sharedProvider.initPushNotification();
         });
       });
 
@@ -51,7 +53,7 @@ export class MyApp {
         {"title": "Contact Us", component: ContactPage, icon: "mail"},
       ]
 
-      this.dismissLoading();
+      this.sharedProvider.dismissLoading();
   }
 
   handleNetwork(){
@@ -82,22 +84,12 @@ export class MyApp {
     this.nav.setRoot(p.component);
   }
 
-  presentLoading(){
-      this.loader = this.loadingCtrl.create({
-          content: "Please wait..."
-      });
-      this.loader.present();
-  }
-
-  dismissLoading(){
-      this.loader.dismiss();
-  }
-
   logout(){
-    this.sharedProvider.refreshSession();
-    this.sharedProvider.setCurrentUser(null);
-    console.log("User Logged Out Successfully >>>>>>> ");
-    this.nav.setRoot(LoginPage);
+    this.authProvider.logout(()=>{
+      this.sharedProvider.refreshSession();
+      this.sharedProvider.setCurrentUser(null);
+      this.nav.setRoot(LoginPage);
+    });
   }
 
 

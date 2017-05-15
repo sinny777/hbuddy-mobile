@@ -18,6 +18,7 @@ export class HbuddyProvider {
   }
 
   fetchUserGroups(userObj, cb){
+        delete this.reqOptions["params"];
         let email: string = userObj.profile && userObj.profile.email;
       	if(!email){
       		email = userObj.email;
@@ -45,6 +46,7 @@ export class HbuddyProvider {
   }
 
   fetchUserPlaces(userObj, cb){
+      delete this.reqOptions["params"];
       if(this.sharedProvider.isDemoAccount()){
           this.sharedProvider.getDemoData("places", (dummyPlaces)=>{
               cb(null, dummyPlaces);
@@ -82,6 +84,7 @@ export class HbuddyProvider {
   }
 
   fetchPlaceAreas(selectedPlace, cb){
+      delete this.reqOptions["params"];
       if(this.sharedProvider.isDemoAccount()){
           this.sharedProvider.getDemoData("placeAreas", (dummyAreas)=>{
               cb(null, dummyAreas);
@@ -102,6 +105,7 @@ export class HbuddyProvider {
   }
 
   fetchBoards(placeArea, cb){
+    delete this.reqOptions["params"];
     console.log("IN hbuddyProvider.fetchBoards: >> ", placeArea.id);
     if(this.sharedProvider.isDemoAccount()){
       this.sharedProvider.getDemoData("boards", (dummyBoards)=>{
@@ -130,6 +134,7 @@ export class HbuddyProvider {
   }
 
   fetchScenes(selectedPlace, cb){
+    delete this.reqOptions["params"];
     if(this.sharedProvider.isDemoAccount()){
         this.sharedProvider.getDemoData("scenes", (dummyScenes)=>{
             cb(null, dummyScenes);

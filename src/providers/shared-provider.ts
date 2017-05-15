@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { LoadingController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 @Injectable()
 export class SharedProvider {
@@ -9,9 +11,10 @@ export class SharedProvider {
   private forDemo: boolean = false;
   private sessionData: any;
   private currentUser: any;
+  private loader: any;
 
   public CONFIG = {
-                    API_BASE_URL: "http://granslive-web.mybluemix.net/api",
+                    API_BASE_URL: "http://hukam-web.mybluemix.net/api",
                     GATEWAY_TYPE: "HukamGateway",
                     MQTT_OPTIONS: {
                                     api_key: "a-o6oosq-dyotpfmyhq",
@@ -28,8 +31,35 @@ export class SharedProvider {
                                   }
                   };
 
-  constructor(private storage: Storage, private http: Http) {
+  constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController) {
     this.sessionData = {};
+  }
+
+  initPushNotification(){
+      const options: PushOptions = {
+         android: {
+             senderID: '874807563899'
+         },
+         ios: {
+             alert: 'true',
+             badge: true,
+             sound: 'true',
+             clearBadge: "true"
+         },
+         windows: {}
+      };
+      const pushObject: PushObject = this.push.init(options);
+      pushObject.on('notification').subscribe((notification: any) => {
+          console.log('Received a notification: >> ', JSON.stringify(notification));
+      });
+      pushObject.on('registration').subscribe((registration: any) => {
+          console.log('Device registered: >>> ', JSON.stringify(registration));
+          this.setSessionData("registrationId", registration.registrationId);
+      });
+      pushObject.on('error').subscribe(error => {
+          console.error('Error with Push plugin', error);
+      });
+
   }
 
   public initStorage(cb){
@@ -117,6 +147,17 @@ export class SharedProvider {
           cb(jsonObj);
           return jsonObj;
        })
+  }
+
+  public presentLoading(msg){
+      this.loader = this.loadingCtrl.create({
+          content: msg
+      });
+      this.loader.present();
+  }
+
+  public dismissLoading(){
+      this.loader.dismiss();
   }
 
 }

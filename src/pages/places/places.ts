@@ -33,9 +33,11 @@ export class PlacesPage {
   ionViewDidLoad() {
       console.log('ionViewDidLoad Places');
       this.menuCtrl.swipeEnable(true, "menu-left");
-      if(!this.places){
+      if(!this.places || this.places.length == 0){
+          this.sharedProvider.presentLoading("Fetching your places...");
           this.fetchUserPlaces(false, (err, places) =>{
               this.places = places;
+              this.sharedProvider.dismissLoading();
           });
       }
   }
@@ -50,8 +52,9 @@ export class PlacesPage {
 
   fetchUserPlaces(refresh, cb){
       console.log("IN fetchUserPlaces for: ", this.sharedProvider.getCurrentUser());
-      if(this.sharedProvider.getSessionData("places") && !refresh){
-          cb(null, this.sharedProvider.getSessionData("places"));
+      let placesInSession = this.sharedProvider.getSessionData("places");
+      if(placesInSession && placesInSession.length > 0 && !refresh){
+          cb(null, placesInSession);
       }else{
           this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getCurrentUser(), (err, places) => {
               console.log("Fetched User Places:  ", places);

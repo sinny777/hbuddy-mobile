@@ -5,6 +5,9 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { BLE } from '@ionic-native/ble';
+import { Push } from '@ionic-native/push';
+import { GooglePlus } from '@ionic-native/google-plus';
+
 import { MyApp } from './app.component';
 
 import { LoginPage } from '../pages/login/login';
@@ -72,7 +75,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SharedProvider,
     MqttProvider,
     BLE,
+    Push,
     Network,
+    GooglePlus,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

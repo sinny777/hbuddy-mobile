@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-// import { SharedProvider } from '../../providers/shared-provider';
+import { SharedProvider } from '../../providers/shared-provider';
 
 import { GatewayPage } from '../gateway/gateway';
 
@@ -13,13 +13,25 @@ import { GatewayPage } from '../gateway/gateway';
 })
 export class SettingsPage {
 
-  configurations:any = {notifications: true, syncWithCloud: true};
+  userSetting:any = {notify: true, syncWithCloud: true};
+  currentUser: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sharedProvider: SharedProvider) {
+
   }
 
   ionViewDidLoad() {
       console.log('ionViewDidLoad Settings');
+      this.currentUser = this.sharedProvider.getCurrentUser();
+      let selectedPlace: any = this.sharedProvider.getSessionData("selectedPlace");
+      this.userSetting.placeId = selectedPlace.id;
+      if(this.currentUser && this.currentUser.userSettings){
+        for(let setting of this.currentUser.userSettings){
+            if(selectedPlace.id == setting.placeId){
+                this.userSetting = setting;
+            }
+        }
+      }
   }
 
   showConfigureGateway(){
