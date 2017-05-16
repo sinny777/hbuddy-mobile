@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
 
 import { PlaceAreasPage } from '../place-areas/place-areas';
 import { ScenesPage } from '../scenes/scenes';
@@ -7,7 +6,6 @@ import { EnergyPage } from '../energy/energy';
 import { GroupsPage } from '../groups/groups';
 
 
-@IonicPage()
 @Component({
   selector: 'page-dashboard',
   templateUrl: 'dashboard.html',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
@@ -7,7 +7,6 @@ import { MqttProvider } from '../../providers/mqtt-provider';
 import {Paho} from 'ng2-mqtt/mqttws31';
 import { Events } from 'ionic-angular';
 
-@IonicPage()
 @Component({
   selector: 'page-devices',
   templateUrl: 'devices.html',

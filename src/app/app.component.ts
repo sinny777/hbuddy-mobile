@@ -34,17 +34,35 @@ export class MyApp {
         this.sharedProvider.initStorage((err, resp)=>{
           if(err){
             console.log("ERROR IN initStorage: >> ", err);
+          }else{
+            console.log("initStorage Resp: >> ", resp);
           }
-          this.handleNetwork();
-          this.sharedProvider.initPushNotification();
+
+          if(this.sharedProvider.getCurrentUser()){
+            console.log("currentUser: >> ", this.sharedProvider.getCurrentUser());
+            this.rootPage = PlacesPage;
+          }else{
+            console.log("No currentUser in session: >> ");
+            this.sharedProvider.getStorageData("currentUser", (user) =>{
+              console.log("get currentUser from Storage: >> ", user);
+                if(user && user.id){
+                    this.sharedProvider.setCurrentUser(user);
+                    this.rootPage = PlacesPage;
+                }else{
+                    this.rootPage = LoginPage;
+                }
+            });
+          }
+
+          if(!platform.is('core') && !platform.is('mobileweb')) {
+            this.handleNetwork();
+            this.sharedProvider.initPushNotification();
+          }
+
+          this.sharedProvider.dismissLoading();
+
         });
       });
-
-      if(this.sharedProvider.getCurrentUser()){
-        this.rootPage = PlacesPage;
-      }else{
-        this.rootPage = LoginPage;
-      }
 
       this.pages = [
         {"title": "My Places", component: PlacesPage, icon: "home"},
@@ -53,11 +71,9 @@ export class MyApp {
         {"title": "Contact Us", component: ContactPage, icon: "mail"},
       ]
 
-      this.sharedProvider.dismissLoading();
   }
 
   handleNetwork(){
-      console.log("IN handleNetwork, Network.name: ");
       this.network.onDisconnect().subscribe(() => {
         console.log('network was disconnected :-(');
         this.sharedProvider.setSessionData("network", "offline");

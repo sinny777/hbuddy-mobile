@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
 import { AuthProvider } from '../../providers/auth-provider';
 import { SharedProvider } from '../../providers/shared-provider';
@@ -7,7 +7,6 @@ import { SharedProvider } from '../../providers/shared-provider';
 import { PlacesPage } from '../places/places';
 
 
-@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, MenuController, NavController } from 'ionic-angular';
+import { MenuController, NavController } from 'ionic-angular';
 
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
 import { SharedProvider } from '../../providers/shared-provider';
 
 import { DashboardPage } from '../dashboard/dashboard';
 
-@IonicPage()
 @Component({
   selector: 'page-places',
   templateUrl: 'places.html',

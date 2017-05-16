@@ -44,13 +44,17 @@ export class AuthProvider {
             delete user["user"];
           }
           console.log("USER OBJ AFTER LOGIN: >> ", user);
-          this.headers.append("Authorization", user.id);
-          this.reqOptions = new RequestOptions({headers: this.headers});
+          this.setAuthHeaders(user.id);
           cb(null, user);
       }, (err) => {
         console.log("Login Failed:>> ", err);
         cb(err, null);
       });
+  }
+
+  setAuthHeaders(token){
+    this.headers.append("Authorization", token);
+    this.reqOptions = new RequestOptions({headers: this.headers});
   }
 
   handleGoogleLogin(cb){

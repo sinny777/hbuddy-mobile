@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
 
-@IonicPage()
 @Component({
   selector: 'page-scenes',
   templateUrl: 'scenes.html',

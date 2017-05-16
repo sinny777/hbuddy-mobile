@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
@@ -7,7 +7,6 @@ import { MqttProvider } from '../../providers/mqtt-provider'
 
 import { DevicesPage } from '../devices/devices';
 
-@IonicPage()
 @Component({
   selector: 'page-place-areas',
   templateUrl: 'place-areas.html',

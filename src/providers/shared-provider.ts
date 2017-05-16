@@ -41,16 +41,47 @@ export class SharedProvider {
              senderID: '874807563899'
          },
          ios: {
-             alert: 'true',
-             badge: true,
-             sound: 'true',
-             clearBadge: "true"
+           alert: 'true',
+           badge: true,
+           sound: 'false'
          },
          windows: {}
       };
       const pushObject: PushObject = this.push.init(options);
       pushObject.on('notification').subscribe((notification: any) => {
           console.log('Received a notification: >> ', JSON.stringify(notification));
+          console.log(notification.message);
+        	console.log(notification.title);
+        	console.log(notification.count);
+        	console.log(notification.sound);
+        	console.log(notification.image);
+        	console.log(notification.additionalData);
+            //if user using app and push notification comes
+            if (notification.additionalData.foreground) {
+              // if application open, show popup
+              /*
+              let confirmAlert = this.alertCtrl.create({
+                title: 'New Notification',
+                message: notification.message,
+                buttons: [{
+                  text: 'Ignore',
+                  role: 'cancel'
+                }, {
+                  text: 'View',
+                  handler: () => {
+                    //TODO: Your logic here
+                    // this.nav.push(DetailsPage, {message: data.message});
+                  }
+                }]
+              });
+              confirmAlert.present();
+              */
+            } else {
+              //if user NOT using app and push notification comes
+              //TODO: Your logic on click of push notification directly
+              // this.nav.push(DetailsPage, {message: data.message});
+              console.log("Push notification clicked");
+            }
       });
       pushObject.on('registration').subscribe((registration: any) => {
           console.log('Device registered: >>> ', JSON.stringify(registration));
@@ -71,7 +102,7 @@ export class SharedProvider {
   }
 
   public setupLocalStorage(cb){
-    this.getDemoData("demo", (data)=>{
+    this.getStorageData("demo", (data)=>{
         if(!data){
           this.http.get('assets/data/app-data.json')
             .map((res) => res.json())
@@ -89,12 +120,18 @@ export class SharedProvider {
   }
 
   public setCurrentUser(user){
+    console.log("IN setCurrentUser: >> ", user);
     if(user && user.type && user.type == 'demo'){
         this.forDemo = true;
     }else{
         this.forDemo = false;
     }
     this.currentUser = user;
+    if(!user || user == null){
+      this.storage.remove("currentUser");
+    }else{
+        this.setStorageData("currentUser", user);
+    }
   }
 
   public getCurrentUser(){
@@ -113,11 +150,14 @@ export class SharedProvider {
     return this.sessionData[key];
   }
 
+  public setStorageData(key, data){
+    this.storage.set(key, data);
+  }
+
   public getStorageData(key, cb){
-    this.storage.get(key).then((data) => {
-          cb(data);
-          return data;
-       })
+     this.storage.get(key).then((data)=>{
+        cb(data);
+     });
   }
 
   public refresh(cb){
@@ -141,7 +181,7 @@ export class SharedProvider {
   }
 
   public getDemoData(key, cb){
-    this.storage.get('demoData').then((data) => {
+    this.storage.get('demo').then((data) => {
           let jsonObj: any = data[key];
           console.log("Data for ", key, ": >>", jsonObj);
           cb(jsonObj);

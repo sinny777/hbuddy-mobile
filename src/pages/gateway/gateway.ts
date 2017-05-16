@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 
 
-@IonicPage()
 @Component({
   selector: 'page-gateway',
   templateUrl: 'gateway.html',
