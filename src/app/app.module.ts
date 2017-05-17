@@ -7,6 +7,7 @@ import { Network } from '@ionic-native/network';
 import { BLE } from '@ionic-native/ble';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { MyApp } from './app.component';
 
@@ -31,6 +32,24 @@ import { MqttProvider } from '../providers/mqtt-provider';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': '1176742f'
+  },
+  'push': {
+    'sender_id': '874807563899',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -50,6 +69,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],

@@ -45,8 +45,8 @@ export class LoginPage {
               user.type = "hukam";
             }
             this.authProvider.fetchUserSettingsById(user.userId, (err, userSettings) => {
-              user.settings = userSettings;
-              console.log("\n\nUser with userSettings: >>> ", user);
+              user.userSettings = userSettings;
+              console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
               this.sharedProvider.setCurrentUser(user);
               this.updateDeviceRegistrationId();
               this.sharedProvider.dismissLoading();
@@ -75,8 +75,8 @@ export class LoginPage {
           userId = user.userId;
         }
         this.authProvider.fetchUserSettingsById(userId, (err, userSettings) => {
-          user.settings = userSettings;
-          console.log("\n\nUser with userSettings: >>> ", user);
+          user.userSettings = userSettings;
+          console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
           this.sharedProvider.setCurrentUser(user);
           this.updateDeviceRegistrationId();
           this.nav.setRoot(PlacesPage, {});
@@ -88,7 +88,7 @@ export class LoginPage {
       let user: any = this.sharedProvider.getCurrentUser();
       let registrationId: string = this.sharedProvider.getSessionData("registrationId");
       if(!registrationId){
-        console.log("No registrationId for user: ", user);
+        console.log("No registrationId for user: ", JSON.stringify(user));
         return false;
       }
       if(user.userSettings){

@@ -21,7 +21,10 @@ export class AuthProvider {
     this.headers.append('Accept', 'application/json');
     this.headers.append("X-IBM-Client-Id", "default");
     this.headers.append("X-IBM-Client-Secret", "SECRET");
-    this.reqOptions = new RequestOptions({headers: this.headers});
+    if(this.sharedProvider.getCurrentUser() && this.sharedProvider.getCurrentUser().id){
+      this.headers.append("Authorization", this.sharedProvider.getCurrentUser().id);
+    }
+    this.reqOptions = new RequestOptions({headers: this.headers});    
   }
 
   public login(credentials, cb){
@@ -43,8 +46,9 @@ export class AuthProvider {
             user.profile = user.user;
             delete user["user"];
           }
+          this.sharedProvider.setCurrentUser(user);
           console.log("USER OBJ AFTER LOGIN: >> ", user);
-          this.setAuthHeaders(user.id);
+          this.refreshHeaders();
           cb(null, user);
       }, (err) => {
         console.log("Login Failed:>> ", err);
@@ -52,9 +56,8 @@ export class AuthProvider {
       });
   }
 
-  setAuthHeaders(token){
-    this.headers.append("Authorization", token);
-    this.reqOptions = new RequestOptions({headers: this.headers});
+  setAuthHeaders(){
+    this.refreshHeaders();
   }
 
   handleGoogleLogin(cb){
@@ -92,6 +95,9 @@ export class AuthProvider {
         cb(new Error("No UserSettings to Save"), null);
     }else{
         let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserSettings";
+        if(userSettings.id){
+          POST_URL = POST_URL + "/"+userSettings.id;
+        }
         return this.http.put(POST_URL, userSettings, this.reqOptions)
         .subscribe(resp => {
             cb(null, resp.json());

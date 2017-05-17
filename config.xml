@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.hbuddy117117" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hukam.hbuddy117117" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>hbuddy</name>
     <description>hBuddy - Hukam Home Automation</description>
     <author email="sinny777@gmail.com" href="http://hbuddy.hukam.in/">Hukam Team</author>
@@ -73,6 +73,7 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.3.0" />
     <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
         <variable name="BLUETOOTH_USAGE_DESCRIPTION" value=" " />
@@ -91,5 +92,4 @@
     <plugin name="phonegap-plugin-push" spec="^1.10.3">
         <variable name="SENDER_ID" value="874807563899" />
     </plugin>
-    <engine name="android" spec="~6.2.3" />
 </widget>

@@ -13,9 +13,9 @@ export class HbuddyProvider {
 
   constructor(private http: Http, private authProvider: AuthProvider, private sharedProvider: SharedProvider) {
     console.log("authProvider: >>>", authProvider.reqOptions);
-    this.reqOptions = authProvider.reqOptions;
     this.currentUser = this.sharedProvider.getCurrentUser();
-    this.authProvider.setAuthHeaders(this.currentUser.id);
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = authProvider.reqOptions;
   }
 
   fetchUserGroups(userObj, cb){
@@ -47,7 +47,6 @@ export class HbuddyProvider {
   }
 
   fetchUserPlaces(userObj, cb){
-      delete this.reqOptions["params"];
       if(this.sharedProvider.isDemoAccount()){
           this.sharedProvider.getDemoData("places", (dummyPlaces)=>{
               cb(null, dummyPlaces);
@@ -57,6 +56,7 @@ export class HbuddyProvider {
 
     this.fetchUserGroups(userObj, (err, groups) =>{
           console.log("GROUPS RESP: >>> ", groups);
+          delete this.reqOptions["params"];
           userObj.groups = groups;
           let ownerId: string = userObj.id;
                 if(userObj.userId){

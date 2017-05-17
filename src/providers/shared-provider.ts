@@ -41,9 +41,11 @@ export class SharedProvider {
              senderID: '874807563899'
          },
          ios: {
+           senderID: '874807563899',
+           gcmSandbox: true,
            alert: 'true',
            badge: true,
-           sound: 'false'
+           sound: 'true'
          },
          windows: {}
       };

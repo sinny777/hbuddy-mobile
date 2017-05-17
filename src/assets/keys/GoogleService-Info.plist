@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>874807563899-330tu0d1vec4vkbbu9l3tefk8e231q4n.apps.googleusercontent.com</string>
+	<string>874807563899-2vc2sp2g5q7726quqce8ptl5k86h0q0p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.874807563899-330tu0d1vec4vkbbu9l3tefk8e231q4n</string>
+	<string>com.googleusercontent.apps.874807563899-2vc2sp2g5q7726quqce8ptl5k86h0q0p</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCYrwXb38aNwwBZLNi0st1EayTQ1JZLxeU</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ionicframework.hbuddymobilev2636663</string>
+	<string>com.ionicframework.hbuddy117117</string>
 	<key>PROJECT_ID</key>
 	<string>hukam-157906</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:874807563899:ios:18a4ac3875bd57a7</string>
+	<string>1:874807563899:ios:628d06af896f73b8</string>
 	<key>DATABASE_URL</key>
 	<string>https://hukam-157906.firebaseio.com</string>
 </dict>
