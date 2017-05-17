@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, AlertController, Events } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
@@ -31,7 +31,7 @@ export class SharedProvider {
                                   }
                   };
 
-  constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController) {
+  constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
     this.sessionData = {};
   }
 
@@ -43,27 +43,20 @@ export class SharedProvider {
          ios: {
            senderID: '874807563899',
            gcmSandbox: true,
-           alert: 'true',
+           alert: true,
            badge: true,
-           sound: 'true'
+           sound: true
          },
          windows: {}
       };
       const pushObject: PushObject = this.push.init(options);
       pushObject.on('notification').subscribe((notification: any) => {
           console.log('Received a notification: >> ', JSON.stringify(notification));
-          console.log(notification.message);
-        	console.log(notification.title);
-        	console.log(notification.count);
-        	console.log(notification.sound);
-        	console.log(notification.image);
-        	console.log(notification.additionalData);
             //if user using app and push notification comes
             if (notification.additionalData.foreground) {
               // if application open, show popup
-              /*
               let confirmAlert = this.alertCtrl.create({
-                title: 'New Notification',
+                title: notification.title,
                 message: notification.message,
                 buttons: [{
                   text: 'Ignore',
@@ -77,11 +70,12 @@ export class SharedProvider {
                 }]
               });
               confirmAlert.present();
-              */
+
             } else {
               //if user NOT using app and push notification comes
               //TODO: Your logic on click of push notification directly
-              // this.nav.push(DetailsPage, {message: data.message});
+              // this.nav.push(DetailsPage, {message: notification.message});
+              this.events.publish("notification:received", notification);
               console.log("Push notification clicked");
             }
       });

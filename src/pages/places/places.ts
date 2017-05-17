@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuController, NavController } from 'ionic-angular';
+import { MenuController, NavController, Events } from 'ionic-angular';
 
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
 import { SharedProvider } from '../../providers/shared-provider';
@@ -17,7 +17,7 @@ export class PlacesPage {
   private showPlaces: boolean = true;
   private showAddUpdatePlace: boolean = false;
 
-  constructor(public hbuddyProvider: HbuddyProvider, public menuCtrl: MenuController, public navCtrl: NavController, public sharedProvider: SharedProvider) {
+  constructor(public hbuddyProvider: HbuddyProvider, public menuCtrl: MenuController, public navCtrl: NavController, public sharedProvider: SharedProvider, private events: Events) {
       // menu.enable(true);
   }
 
@@ -31,6 +31,9 @@ export class PlacesPage {
 
   ionViewDidLoad() {
       console.log('ionViewDidLoad Places');
+      this.events.subscribe('Push Notification:received', (message: any) => {
+          console.log('notification Message Payload: >> ', message);
+      });
       this.menuCtrl.swipeEnable(true, "menu-left");
       if(!this.places || this.places.length == 0){
           this.sharedProvider.presentLoading("Fetching your places...");

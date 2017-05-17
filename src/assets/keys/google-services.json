@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:874807563899:android:628d06af896f73b8",
+        "mobilesdk_app_id": "1:874807563899:android:f06f38b06dc6ab1c",
         "android_client_info": {
-          "package_name": "com.ionicframework.hbuddy117117"
+          "package_name": "com.hukam.hbuddy117117"
         }
       },
       "oauth_client": [
         {
-          "client_id": "874807563899-3pdclnenl4ju2jrccol3q2paccamvb41.apps.googleusercontent.com",
+          "client_id": "874807563899-7f816g261dh37le75131p7m37at5nqpn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ionicframework.hbuddy117117",
+            "package_name": "com.hukam.hbuddy117117",
             "certificate_hash": "2b47bea605243be7fc6ef0b257e29dfe3abf338b"
           }
         }
@@ -36,10 +36,10 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "874807563899-2vc2sp2g5q7726quqce8ptl5k86h0q0p.apps.googleusercontent.com",
+              "client_id": "874807563899-0csghqcj42sdmlsi4sbgm0rb6vhsas3f.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ionicframework.hbuddy117117"
+                "bundle_id": "com.hukam.hbuddy117117"
               }
             }
           ]
