@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController, ToastController } from 'ionic-angular';
+import { Nav, Platform, NavController, ToastController, Events } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,11 +26,12 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(private network: Network, private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private sharedProvider: SharedProvider, private authProvider: AuthProvider, private toastCtrl: ToastController) {
+  constructor(private network: Network, private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private sharedProvider: SharedProvider, private authProvider: AuthProvider, private toastCtrl: ToastController, private events: Events) {
       this.sharedProvider.presentLoading("Please wait...");
       platform.ready().then(() => {
         statusBar.styleDefault();
         splashScreen.hide();
+        this.handleAuthRequired();
         this.sharedProvider.initStorage((err, resp)=>{
           if(err){
             console.log("ERROR IN initStorage: >> ", err);
@@ -71,6 +72,13 @@ export class MyApp {
         {"title": "Contact Us", component: ContactPage, icon: "mail"},
       ]
 
+  }
+
+  handleAuthRequired(){
+    this.events.subscribe('auth:required', () => {
+        console.log('Authentication Required !!!');
+        this.logout();
+    });
   }
 
   handleNetwork(){

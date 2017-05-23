@@ -41,6 +41,7 @@ export class LoginPage {
         }
         if(user){
             console.log("SUCCESSFULLY LOGGED IN >>> ", user);
+            this.authProvider.setAuthHeaders();
             if(!user.type){
               user.type = "hukam";
             }
@@ -69,7 +70,7 @@ export class LoginPage {
         if(!user.type){
           user.type = "google";
         }
-
+        this.authProvider.setAuthHeaders();
         let userId: string = user.id;
         if(user.userId){
           userId = user.userId;

@@ -8,8 +8,8 @@ import { SharedProvider } from './shared-provider';
 @Injectable()
 export class AuthProvider {
 
-    private headers: Headers;
-    public reqOptions: RequestOptions;
+    public headers: Headers;
+    private reqOptions: RequestOptions;
 
   constructor(public http: Http, public sharedProvider: SharedProvider, private googlePlus: GooglePlus) {
       this.refreshHeaders();
@@ -24,7 +24,6 @@ export class AuthProvider {
     if(this.sharedProvider.getCurrentUser() && this.sharedProvider.getCurrentUser().id){
       this.headers.append("Authorization", this.sharedProvider.getCurrentUser().id);
     }
-    this.reqOptions = new RequestOptions({headers: this.headers});    
   }
 
   public login(credentials, cb){
@@ -39,6 +38,10 @@ export class AuthProvider {
       return false;
     }
 
+      var ONE_MONTH = 60 * 60 * 24 * 30;
+      credentials.ttl = ONE_MONTH;
+      this.refreshHeaders();
+      this.reqOptions = new RequestOptions({headers: this.headers});
       return this.http.post(this.sharedProvider.CONFIG.API_BASE_URL +'/MyUsers/login?include=user', credentials, this.reqOptions)
       .subscribe(resp => {
           let user = resp.json();
@@ -48,7 +51,6 @@ export class AuthProvider {
           }
           this.sharedProvider.setCurrentUser(user);
           console.log("USER OBJ AFTER LOGIN: >> ", user);
-          this.refreshHeaders();
           cb(null, user);
       }, (err) => {
         console.log("Login Failed:>> ", err);

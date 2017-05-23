@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
+import { Events } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
 import { AuthProvider } from './auth-provider';
@@ -10,16 +11,13 @@ export class HbuddyProvider {
 
   private reqOptions: RequestOptions;
   private currentUser: any;
-
-  constructor(private http: Http, private authProvider: AuthProvider, private sharedProvider: SharedProvider) {
-    console.log("authProvider: >>>", authProvider.reqOptions);
+  
+  constructor(private http: Http, private authProvider: AuthProvider, private sharedProvider: SharedProvider, private events: Events) {
+    console.log("authProvider: >>>", authProvider.headers);
     this.currentUser = this.sharedProvider.getCurrentUser();
-    this.authProvider.setAuthHeaders();
-    this.reqOptions = authProvider.reqOptions;
   }
 
   fetchUserGroups(userObj, cb){
-        delete this.reqOptions["params"];
         let email: string = userObj.profile && userObj.profile.email;
       	if(!email){
       		email = userObj.email;
@@ -35,13 +33,14 @@ export class HbuddyProvider {
     	    				   		             }
                             };
         let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Groups?";
+        // this.authProvider.setAuthHeaders();
+        this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
         this.reqOptions.params = findReq;
         return this.http.get(GET_URL, this.reqOptions)
         .subscribe(resp => {
             cb(null, resp.json());
         }, (err) => {
-          console.log("Error while fetching User Groups:>> ", err);
-          cb(err, null);
+          this.handleError("Error while fetching User Groups:>> ", err, cb);
         });
 
   }
@@ -56,7 +55,8 @@ export class HbuddyProvider {
 
     this.fetchUserGroups(userObj, (err, groups) =>{
           console.log("GROUPS RESP: >>> ", groups);
-          delete this.reqOptions["params"];
+          // this.authProvider.setAuthHeaders();
+          this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
           userObj.groups = groups;
           let ownerId: string = userObj.id;
                 if(userObj.userId){
@@ -77,8 +77,7 @@ export class HbuddyProvider {
           .subscribe(resp => {
               cb(null, resp.json());
           }, (err) => {
-            console.log("Error while fetching User Places:>> ", err);
-            cb(err, null);
+            this.handleError("Error while fetching User Places:>> ", err, cb);
           });
     });
 
@@ -95,18 +94,18 @@ export class HbuddyProvider {
 
       let findReq: any = {filter: {where: {placeId: selectedPlace.id}}};
       let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/PlaceAreas?";
+      this.authProvider.setAuthHeaders();
+      this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
       this.reqOptions.params = findReq;
       return this.http.get(GET_URL, this.reqOptions)
       .subscribe(resp => {
           cb(null, resp.json());
       }, (err) => {
-        console.log("Erron in fetching PlaceAreas:>> ", err);
-        cb(err, null);
+        this.handleError("Erron in fetching PlaceAreas:>> ", err, cb);
       });
   }
 
   fetchBoards(placeArea, cb){
-    delete this.reqOptions["params"];
     console.log("IN hbuddyProvider.fetchBoards: >> ", placeArea.id);
     if(this.sharedProvider.isDemoAccount()){
       this.sharedProvider.getDemoData("boards", (dummyBoards)=>{
@@ -123,19 +122,19 @@ export class HbuddyProvider {
     								}
     						};
     let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Boards?";
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
     this.reqOptions.params = findReq;
     return this.http.get(GET_URL, this.reqOptions)
     .subscribe(resp => {
         console.log("Fetched Boards RESP: >>> ", resp.json());
         cb(null, resp.json());
     }, (err) => {
-      console.log("Erron in fetching Boards:>> ", err);
-      cb(err, null);
+      this.handleError("Erron in fetching Boards:>> ", err, cb);
     });
   }
 
   fetchScenes(selectedPlace, cb){
-    delete this.reqOptions["params"];
     if(this.sharedProvider.isDemoAccount()){
         this.sharedProvider.getDemoData("scenes", (dummyScenes)=>{
             cb(null, dummyScenes);
@@ -145,14 +144,23 @@ export class HbuddyProvider {
 
     let findReq: any = {filter: {where: {placeId: selectedPlace.id}}};
     let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Scenes?";
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
     this.reqOptions.params = findReq;
     return this.http.get(GET_URL, this.reqOptions)
     .subscribe(resp => {
         cb(null, resp.json());
     }, (err) => {
-      console.log("Erron in fetching PlaceAreas:>> ", err);
-      cb(err, null);
+      this.handleError("Erron in fetching PlaceAreas:>> ", err, cb);
     });
+  }
+
+  private handleError(msg, err, cb){
+      console.log("ERROR: ",msg, err);
+      if(err.status == 401){
+        this.events.publish("auth:required", err);
+      }
+      cb(err, null);
   }
 
 
