@@ -69,9 +69,17 @@ export class DevicesPage {
   fetchBoardsAndDevices(placeArea, refresh, cb){
     console.log("In fetchBoardsAndDevices: >>> ", placeArea);
     if(!placeArea.boards || refresh){
-      this.hbuddyProvider.fetchBoards(placeArea, (err, boards) => {
-          console.log("Fetched PlaceArea Boards:  ", boards);
-          cb(err, boards);
+      this.hbuddyProvider.fetchBoards(placeArea).then( boards => {
+        console.log("Fetched Boards:  ", boards);
+        placeArea.boards = boards;
+        cb(null, placeArea.boards);
+      },
+      error => {
+          if(error.status == 401){
+            this.events.publish("auth:required", error);
+          }else{
+            cb(error, null);
+          }
       });
     }else{
         cb(null, placeArea.boards);

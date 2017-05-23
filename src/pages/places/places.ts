@@ -58,11 +58,18 @@ export class PlacesPage {
       if(placesInSession && placesInSession.length > 0 && !refresh){
           cb(null, placesInSession);
       }else{
-          this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getCurrentUser(), (err, places) => {
-              console.log("Fetched User Places:  ", places);
-              this.sharedProvider.setSessionData("places", places);
-              cb(err, places);
-          });
+        this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getCurrentUser()).then( places => {
+          console.log("Fetched User Places:  ", places);
+          this.sharedProvider.setSessionData("places", places);
+          cb(null, places);
+        },
+        error => {
+            if(error.status == 401){
+              this.events.publish("auth:required", error);
+            }else{
+              cb(error, null);
+            }
+        });
       }
   }
 

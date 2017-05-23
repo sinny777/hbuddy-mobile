@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
@@ -19,7 +19,7 @@ export class PlaceAreasPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider,
-              public mqttProvider: MqttProvider) {
+              public mqttProvider: MqttProvider, private events: Events) {
               this.selectedPlace = navParams.get('selectedPlace');
               if(!this.selectedPlace){
                 this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
@@ -50,9 +50,17 @@ export class PlaceAreasPage {
 
   getPlaceAreas(refresh, cb){
       if(!this.selectedPlace.areas || refresh){
-        this.hbuddyProvider.fetchPlaceAreas(this.selectedPlace, (err, placeAreas) => {
-            console.log("Fetched PlaceAreas:  ", placeAreas);
-            cb(err, placeAreas);
+        this.hbuddyProvider.fetchPlaceAreas(this.selectedPlace).then( placeAreas => {
+          console.log("Fetched PlaceAreas:  ", placeAreas);
+          this.selectedPlace.areas = placeAreas;
+          cb(null, this.selectedPlace.areas);
+        },
+        error => {
+            if(error.status == 401){
+              this.events.publish("auth:required", error);
+            }else{
+              cb(error, null);
+            }
         });
       }else{
           cb(null, this.selectedPlace.areas);
