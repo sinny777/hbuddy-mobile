@@ -20,6 +20,9 @@ export class HbuddyProvider {
   }
 
   fetchUserGroups(userObj): Promise<any>{
+        if(this.sharedProvider.isDemoAccount()){
+            return this.sharedProvider.getDemoData("groups");
+        }
         let email: string = userObj.profile && userObj.profile.email;
       	if(!email){
       		email = userObj.email;
@@ -44,16 +47,15 @@ export class HbuddyProvider {
   }
 
   fetchUserPlaces(userObj): Promise<any>{
-      if(this.sharedProvider.isDemoAccount()){
-          this.sharedProvider.getDemoData("places", (dummyPlaces)=>{
-            return new Promise((resolve, reject) => {
-                resolve(dummyPlaces);
-            });
-          });
-      }
+
     return this.fetchUserGroups(userObj).then( groups => {
         console.log("Fetched User Groups:  ", groups);
         userObj.groups = groups;
+
+        if(this.sharedProvider.isDemoAccount()){
+            return this.sharedProvider.getDemoData("places");
+        }
+
         let ownerId: string = userObj.id;
               if(userObj.userId){
                 ownerId = userObj.userId;
@@ -82,13 +84,8 @@ export class HbuddyProvider {
   }
 
   fetchPlaceAreas(selectedPlace): Promise<any>{
-      delete this.reqOptions["params"];
       if(this.sharedProvider.isDemoAccount()){
-          this.sharedProvider.getDemoData("placeAreas", (dummyAreas)=>{
-            return new Promise((resolve, reject) => {
-                resolve(dummyAreas);
-            });
-          });
+          return this.sharedProvider.getDemoData("placeAreas");
       }
 
       let findReq: any = {filter: {where: {placeId: selectedPlace.id}}};
@@ -105,11 +102,7 @@ export class HbuddyProvider {
   fetchBoards(placeArea): Promise<any>{
     console.log("IN hbuddyProvider.fetchBoards: >> ", placeArea.id);
     if(this.sharedProvider.isDemoAccount()){
-      this.sharedProvider.getDemoData("boards", (dummyBoards)=>{
-        return new Promise((resolve, reject) => {
-            resolve(dummyBoards);
-        });
-      });
+        return this.sharedProvider.getDemoData("boards");
     }
 
     let findReq: any = {
@@ -131,10 +124,7 @@ export class HbuddyProvider {
 
   fetchScenes(selectedPlace, cb){
     if(this.sharedProvider.isDemoAccount()){
-        this.sharedProvider.getDemoData("scenes", (dummyScenes)=>{
-            cb(null, dummyScenes);
-        });
-        return false;
+        return this.sharedProvider.getDemoData("scenes");
     }
 
     let findReq: any = {filter: {where: {placeId: selectedPlace.id}}};
@@ -143,11 +133,9 @@ export class HbuddyProvider {
     this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
     this.reqOptions.params = findReq;
     return this.http.get(GET_URL, this.reqOptions)
-    .subscribe(resp => {
-        cb(null, resp.json());
-    }, (err) => {
-      this.handleError("Erron in fetching PlaceAreas:>> ", err, cb);
-    });
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
   }
 
   savePlace(place, cb){

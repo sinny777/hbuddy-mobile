@@ -30,9 +30,8 @@ export class AuthProvider {
     // console.log("Credentials: >> ", JSON.stringify(credentials));
     this.refreshHeaders();
     if(credentials.email == "demo" && credentials.password == "demo"){
-      this.sharedProvider.getDemoData("currentUser", (dummyUser)=>{
+      this.sharedProvider.getDemoData("currentUser").then(dummyUser =>{
           this.sharedProvider.setCurrentUser(dummyUser);
-          console.log("this.currentUser Data: >>>> ", dummyUser);
           cb(null, dummyUser);
       });
       return false;
@@ -50,7 +49,6 @@ export class AuthProvider {
             delete user["user"];
           }
           this.sharedProvider.setCurrentUser(user);
-          console.log("USER OBJ AFTER LOGIN: >> ", user);
           cb(null, user);
       }, (err) => {
         console.log("Login Failed:>> ", err);
@@ -73,10 +71,16 @@ export class AuthProvider {
   }
 
   public fetchUserSettingsById(userId, cb){
-    delete this.reqOptions["params"];
     if(!userId){
         cb(new Error("No UserSettings Found"), null);
     }else{
+        if(this.sharedProvider.isDemoAccount()){
+           cb(null, {});
+           return false;
+        }
+
+        this.setAuthHeaders();
+        this.reqOptions = new RequestOptions({headers: this.headers});
         let findReq: any = {filter: {where: {or: [{userId: userId}]}}};
         this.reqOptions.params = findReq;
         let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserSettings";
@@ -92,10 +96,11 @@ export class AuthProvider {
 
   public saveUserSettings(userSettings, cb){
     console.log("IN saveUserSettings: >>> ", userSettings);
-    delete this.reqOptions["params"];
     if(!userSettings){
         cb(new Error("No UserSettings to Save"), null);
     }else{
+        this.setAuthHeaders();
+        this.reqOptions = new RequestOptions({headers: this.headers});
         let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserSettings";
         if(userSettings.id){
           POST_URL = POST_URL + "/"+userSettings.id;

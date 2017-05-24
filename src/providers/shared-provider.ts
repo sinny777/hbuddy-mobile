@@ -176,13 +176,14 @@ export class SharedProvider {
     this.forDemo = false;
   }
 
-  public getDemoData(key, cb){
-    this.storage.get('demo').then((data) => {
-          let jsonObj: any = data[key];
-          console.log("Data for ", key, ": >>", jsonObj);
-          cb(jsonObj);
-          return jsonObj;
-       })
+  public getDemoData(key): Promise<any>{
+      return this.storage.get('demo').then((data) => {
+          return new Promise((resolve, reject) => {
+              let jsonObj: any = data[key];
+              console.log("Data for ", key, ": >>", jsonObj);
+              return resolve(jsonObj);
+          });
+       });
   }
 
   public presentLoading(msg){

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
@@ -12,7 +12,7 @@ export class ScenesPage {
 
   selectedPlace: any;
 
-  constructor(public navCtrl: NavController, public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider) {
+  constructor(public navCtrl: NavController, public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider, private events: Events) {
     this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
   }
 
@@ -36,9 +36,16 @@ export class ScenesPage {
   fetchScenes(refresh, cb){
       console.log("IN fetchScenes for: ", this.selectedPlace);
       if(!this.selectedPlace.scenes || refresh){
-        this.hbuddyProvider.fetchScenes(this.selectedPlace, (err, scenes) => {
-            console.log("Fetched Place Scenes:  ", scenes);
-            cb(err, scenes);
+        this.hbuddyProvider.fetchScenes(this.selectedPlace).then(scenes =>{
+          console.log("Fetched Place Scenes:  ", scenes);
+          cb(null, scenes);
+        },
+        error => {
+            if(error.status == 401){
+              this.events.publish("auth:required", error);
+            }else{
+              cb(error, null);
+            }
         });
       }else{
           cb(null, this.selectedPlace.scenes);

@@ -1,6 +1,25 @@
 {
   "demo": {
     "currentUser": {"username": "demo", "password": "demo", "type": "demo"},
+    "groups": [
+        {
+          "description": "Family Group",
+          "members": [
+            {
+              "status": "invited",
+              "username": "sinny777@gmail.com",
+              "password": ""
+            },
+            {
+              "status": "invited",
+              "username": "sabiinsearch@gmail.com"
+            }
+          ],
+          "ownerId": "demo123",
+          "placeId": "place123",
+          "title": "Family"
+        }
+    ],
     "places": [
                 {"id":"place123","title": "My Demo Home", "description": "Home Place for demo purpose only..", "gatewayId": "abc123xyz45"},
                 {"id":"place456","title": "My Demo Shop", "description": "My Shop for demo purpose only..", "gatewayId": "xyz321abc45"}
