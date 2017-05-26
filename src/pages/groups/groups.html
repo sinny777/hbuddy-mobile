@@ -1,15 +1,68 @@
 <ion-header >
   <ion-navbar color="primary">
-    <button ion-button menuToggle icon-only>
-      <ion-icon name='menu'></ion-icon>
-    </button>
-    <ion-title>
-      Groups
-    </ion-title>
+        <ion-buttons start>
+            <button ion-button menuToggle="left" icon-only>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>
+          Groups
+        </ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only class="light-bold" (click)="showAddNewGroup();">
+               <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding class="background">
 
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+      <ion-card *ngFor="let group of groups">
+          <ion-card-content>
+            <ion-card-title>
+              {{group.title}}
+              <span class="small font-weight-small right"><ion-icon name="clock"></ion-icon>&nbsp;&nbsp;{{group.audit.modified | date :'short'}}</span>
+            </ion-card-title>
+
+            <ion-grid *ngIf="group.members && group.members.length > 0">
+
+                <ion-row *ngFor="let member of group.members">
+                    <ion-col col-9>
+                        <div class="small">
+                            {{member.username}}
+                        </div>
+                    </ion-col>
+                    <ion-col col-3>
+                        <div class="small">
+                            {{member.status}}
+                        </div>
+                    </ion-col>
+              </ion-row>
+
+            </ion-grid>
+
+          </ion-card-content>
+
+              <ion-row>
+                <ion-col col-6>
+                  <button ion-button icon-center clear left card-bottom-btn (click)="editGroup(group);">
+                    <ion-icon name="create"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col col-6>
+                  <button ion-button icon-center round small right card-bottom-btn (click)="showAddMember(group);">
+                    <div>Add Member</div>
+                  </button>
+                </ion-col>
+              </ion-row>
+
+      </ion-card>
 </ion-content>

@@ -36,19 +36,17 @@ page-places {
 
   }
 
-  .places-card{
-    text-align: left;
-  }
-
   .card{
     // background: transparentize(#9BB4E3, 0.70);
     background: rgba(0, 0, 0, 0.5);
+    text-align: left;
     .card-title{
       color: #fff;
+      font-size: 14px
     }
 
     p{
-      font-size: 13px;
+      font-size: 12px;
       color: #fff;
     }
   }

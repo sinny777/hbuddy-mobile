@@ -7,7 +7,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { PlacesPage } from '../pages/places/places';
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { SettingsPage } from '../pages/settings/settings';
 import { ContactPage } from '../pages/contact/contact';
 
 import { AuthProvider } from '../providers/auth-provider';
@@ -68,7 +67,6 @@ export class MyApp {
       this.pages = [
         {"title": "My Places", component: PlacesPage, icon: "home"},
         {"title": "Dashboard", component: DashboardPage, icon: "speedometer"},
-        {"title": "Settings", component: SettingsPage, icon: "construct"},
         {"title": "Contact Us", component: ContactPage, icon: "mail"},
       ]
 

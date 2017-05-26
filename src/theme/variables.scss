@@ -54,6 +54,38 @@ $colors: (
 
 }
 
+.card-bottom-btn{
+  padding: 2px !important;
+  margin: 2px !important;
+  vertical-align: bottom !important;
+  height: auto;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.right{
+  float: right;
+}
+
+.left{
+  float: left;
+}
+
+.small{
+  font-size: 11px;
+  color: #fff
+}
+
+.font-weight-normal{
+  font-weight: normal;
+}
+
+.font-weight-small{
+  font-weight: 100;
+}
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

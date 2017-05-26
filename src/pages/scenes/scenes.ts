@@ -10,7 +10,8 @@ import { HbuddyProvider } from '../../providers/hbuddy-provider';
 })
 export class ScenesPage {
 
-  selectedPlace: any;
+  private selectedPlace: any;
+  private scenes;
 
   constructor(public navCtrl: NavController, public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider, private events: Events) {
     this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
@@ -20,7 +21,7 @@ export class ScenesPage {
     console.log('ionViewDidLoad Scenes: ', this.selectedPlace);
     this.sharedProvider.presentLoading("Fetching scenes...");
     this.fetchScenes(false, (err, scenes) => {
-        this.selectedPlace.scenes = scenes;
+        this.scenes = scenes;
         this.sharedProvider.dismissLoading();
     });
   }
@@ -28,16 +29,17 @@ export class ScenesPage {
   doRefresh(refresher){
     console.log("IN doRefresh for Scenes: >> ");
     this.fetchScenes(true, (err, scenes) => {
-        this.selectedPlace.scenes = scenes;
+        this.scenes = scenes;
         refresher.complete();
     });
   }
 
   fetchScenes(refresh, cb){
-      console.log("IN fetchScenes for: ", this.selectedPlace);
-      if(!this.selectedPlace.scenes || refresh){
+      this.scenes = this.sharedProvider.getSessionData(this.selectedPlace.id+"_SCENES");
+      if(!this.scenes || refresh){
         this.hbuddyProvider.fetchScenes(this.selectedPlace).then(scenes =>{
           console.log("Fetched Place Scenes:  ", scenes);
+          this.sharedProvider.setSessionData(this.selectedPlace.id+"_SCENES", scenes);
           cb(null, scenes);
         },
         error => {
@@ -48,7 +50,7 @@ export class ScenesPage {
             }
         });
       }else{
-          cb(null, this.selectedPlace.scenes);
+          cb(null, this.scenes);
       }
   }
 

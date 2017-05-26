@@ -16,9 +16,13 @@ export class PlacesPage {
   private selectedPlace: any;
   private showPlaces: boolean = true;
   private showAddUpdatePlace: boolean = false;
+  private floors = ["Ground"];
 
   constructor(public hbuddyProvider: HbuddyProvider, public menuCtrl: MenuController, public navCtrl: NavController, public sharedProvider: SharedProvider, private events: Events) {
       // menu.enable(true);
+      for(let i = 1; i <= 150; i++){
+            this.floors.push(''+i);
+      }
   }
 
   ionViewWillEnter() {
@@ -88,17 +92,41 @@ export class PlacesPage {
       // this.navCtrl.setRoot(DashboardPage, {"selectedPlace": place});
   }
 
-  addOrUpdatePlace(){
-      console.log("IN addOrUpdatePlace: >> ", this.selectedPlace );
+  savePlace(){
+      console.log("IN savePlace: >> ", this.selectedPlace );
+      this.hbuddyProvider.savePlace(this.selectedPlace).then( place => {
+        console.log("Saved User Place:  ", place);
+        this.selectedPlace = {};
+        let found: boolean = false;
+        for(let p of this.places){
+            if(p.id == place.id){
+                found = true;
+                p = place;
+            }
+        }
+        if(!found){
+          this.places.push(place);
+        }
+        this.sharedProvider.setSessionData("places", this.places);
+        this.showAddUpdatePlace = false;
+        this.showPlaces = true;
+      },
+      error => {
+          if(error.status == 401){
+            this.events.publish("auth:required", error);
+          }else{
+            console.log("ERROR: >>> ", error);
+          }
+      });
   }
 
   viewPlace(place){
-      console.log("IN viewPlace: >> ", place);
       this.sharedProvider.setSessionData("selectedPlace", place);
       this.navCtrl.setRoot(DashboardPage, {"selectedPlace": place});
   }
 
   dismiss(){
+      this.selectedPlace = {};
       this.showAddUpdatePlace = false;
       this.showPlaces = true;
   }

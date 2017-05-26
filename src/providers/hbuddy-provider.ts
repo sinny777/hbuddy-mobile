@@ -122,7 +122,7 @@ export class HbuddyProvider {
           .catch(this.handleErrorPromise);
   }
 
-  fetchScenes(selectedPlace, cb){
+  fetchScenes(selectedPlace){
     if(this.sharedProvider.isDemoAccount()){
         return this.sharedProvider.getDemoData("scenes");
     }
@@ -138,19 +138,53 @@ export class HbuddyProvider {
           .catch(this.handleErrorPromise);
   }
 
-  savePlace(place, cb){
-    /*
+  fetchPlaceGroups(placeId): Promise<any>{
+        if(this.sharedProvider.isDemoAccount()){
+            return this.sharedProvider.getDemoData("groups");
+        }
+
+        let findReq: any = {filter: {where: {placeId: placeId}}};
+        let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Groups?";
+        this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+        this.reqOptions.params = findReq;
+        return this.http.get(GET_URL, this.reqOptions)
+        .toPromise()
+		    .then(this.extractData)
+	      .catch(this.handleErrorPromise);
+  }
+
+  savePlace(place){
     let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Places";
+    if(place.id){
+      POST_URL = POST_URL + "?id="+place.id;
+    }
     this.authProvider.setAuthHeaders();
     this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
-    return this.http.post(POST_URL, place this.reqOptions)
-    .subscribe(resp => {
-        cb(null, resp.json());
-    }, (err) => {
-      this.handleError("Erron in fetching PlaceAreas:>> ", err, cb);
-    });
-    */
+    return this.http.put(POST_URL, place, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
   }
+
+  savePlaceArea(placeArea){
+    let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/PlaceAreas";
+    if(placeArea.id){
+      POST_URL = POST_URL + "?id="+placeArea.id;
+    }
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.put(POST_URL, placeArea, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
+  private extractData(res: Response) {
+        let body = res.json();
+        return body;
+  }
+
+/*
 
   private handleError(msg, err, cb){
       console.log("ERROR: ",msg, err);
@@ -160,12 +194,6 @@ export class HbuddyProvider {
       cb(err, null);
   }
 
-  private extractData(res: Response) {
-        let body = res.json();
-        return body;
-  }
-
-/*
   private handleErrorObservable (error: Response | any) {
     	console.error(error.message || error);
       if(err.status == 401){

@@ -29,14 +29,15 @@
 
 <ion-content padding class="background">
 
+<div *ngIf="showPlaces">
+
   <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-<div *ngIf="showPlaces">
   <ion-card *ngFor="let place of places" >
       <!-- <img src="../assets/images/room3.jpg"/> -->
-      <ion-card-content class="places-card">
+      <ion-card-content class="text-left">
         <ion-card-title>
           {{place.title}}
           </ion-card-title>
@@ -47,13 +48,13 @@
 
       <ion-row>
         <ion-col col-6>
-          <button ion-button icon-center clear style="float: left;" (click)="showEditPlace(place);">
+          <button ion-button icon-center clear class="card-bottom-btn left" (click)="showEditPlace(place);">
             <ion-icon name="create"></ion-icon>
             <!-- <div>Edit</div> -->
           </button>
         </ion-col>
         <ion-col col-6>
-          <button ion-button icon-center clear style="float: right;" (click)="viewPlace(place);">
+          <button ion-button icon-center clear class="card-bottom-btn right" (click)="viewPlace(place);">
             <ion-icon name="eye"></ion-icon>
             <!-- <div>View</div> -->
           </button>
@@ -82,10 +83,18 @@
               <ion-label stacked >Description</ion-label>
     					<ion-textarea type="text" [(ngModel)]="selectedPlace.description"></ion-textarea>
     				</ion-item>
+            <ion-item>
+              <ion-label stacked>Floor</ion-label>
+              <ion-select class="small" [(ngModel)]="selectedPlace.floor" >
+                <ion-option *ngFor="let floor of floors" value="{{floor}}">
+                    {{floor}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
 
             <ion-row>
                 <ion-col>
-            				<button ion-button block outline  (click)='addOrUpdatePlace();'>
+            				<button ion-button block outline  (click)='savePlace();'>
                       Submit
                     </button>
                 </ion-col>

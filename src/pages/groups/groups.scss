@@ -4,19 +4,24 @@ page-groups {
     background-size: cover;
   }
 
-  .right{
-    text-align: right;
+  .bar-buttons{
+    color: #fff;
+    font-weight: bold;
   }
 
-  .small{
-    font-size: 11px;
-    color: #fff
+  .light-bold{
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px
   }
 
   .scroll-content{
     padding: 3px !important;
   }
 
+  .button-ios{
+    height: 2.3em;
+  }
 /*
   .toolbar {
     .toolbar-background {
@@ -27,15 +32,13 @@ page-groups {
       color: #fff;
     }
 
-    .bar-buttons{
-      color: #fff;
-    }
   }
 */
 
   .card{
-    background: transparentize(#9BB4E3, 0.70);
-    max-height: 150px;
+    // background: transparentize(#9BB4E3, 0.70);
+    background: rgba(0, 0, 0, 0.5);
+    min-height: 100px;
 
     .card-title{
       color: #fff;
@@ -44,9 +47,10 @@ page-groups {
     }
 
     p{
-      font-size: 13px;
+      font-size: 11px;
       color: #fff;
     }
 
   }
+
 }
