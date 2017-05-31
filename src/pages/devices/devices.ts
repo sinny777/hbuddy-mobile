@@ -15,10 +15,17 @@ export class DevicesPage {
 
   private selectedPlaceArea: any;
   private selectedPlace: any;
+  private showEditDevice = false;
+  private showDevices = true;
+  private selectedDevice: any;
+  deviceTypes: any;
 
   constructor(public navParams: NavParams, public hbuddyProvider: HbuddyProvider, public sharedProvider: SharedProvider, public mqttProvider: MqttProvider, public events: Events) {
     this.selectedPlaceArea = this.navParams.get("selectedPlaceArea");
     this.selectedPlace = this.navParams.get("selectedPlace");
+    this.sharedProvider.getDemoData("deviceTypes").then(types => {
+      this.deviceTypes = types;
+    });
   }
 
   ionViewDidLoad() {
@@ -109,8 +116,37 @@ export class DevicesPage {
     this.mqttProvider.publishTopic(topic, msg);
   }
 
-  editDevice(device){
-    console.log("IN editDevice:>>> ", device);
+  showEditDevicePanel(device){
+    console.log("IN showEditDevicePanel:>>> ", device);
+    this.selectedDevice = device;
+    this.showEditDevice = true;
+    this.showDevices = false;
+  }
+
+  saveDevice(device){
+    for(let board of this.selectedPlaceArea.boards){
+        if(board.uniqueIdentifier == device.parentId){
+            this.hbuddyProvider.saveBoard(board).then( savedBoard => {
+              console.log("Saved Board:  ", savedBoard);
+              this.selectedDevice = {};
+              this.showEditDevice = false;
+              this.showDevices = true;
+            },
+            error => {
+                if(error.status == 401){
+                  this.events.publish("auth:required", error);
+                }else{
+                  console.log("ERROR: >>> ", error);
+                }
+            });
+        }
+    }
+  }
+
+  dismiss(){
+    this.selectedDevice = {};
+    this.showEditDevice = false;
+    this.showDevices = true;
   }
 
 }

@@ -98,9 +98,7 @@ export class SharedProvider {
   }
 
   public setupLocalStorage(cb){
-    this.getStorageData("demo", (data)=>{
-        if(!data){
-          this.http.get('assets/data/app-data.json')
+      this.http.get('assets/data/app-data.json')
             .map((res) => res.json())
             .subscribe(data => {
                 this.storage.set("demo", data.demo);
@@ -108,11 +106,7 @@ export class SharedProvider {
             }, (rej) => {
               console.error("Could not load local data", rej)
               cb(rej, null);
-            });
-        }else{
-            cb(null, "SUCCESS");
-        }
-    });
+            });            
   }
 
   public setCurrentUser(user){

@@ -179,6 +179,19 @@ export class HbuddyProvider {
           .catch(this.handleErrorPromise);
   }
 
+  saveBoard(board){
+    let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Boards";
+    if(board.id){
+      POST_URL = POST_URL + "?id="+board.id;
+    }
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.put(POST_URL, board, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
   private extractData(res: Response) {
         let body = res.json();
         return body;

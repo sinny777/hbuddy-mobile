@@ -22,3 +22,47 @@
   font-size: 12px;
   padding-left: 15px
 }
+
+.icon-circle, .icon-circle-large, .icon-circle-small{
+position: relative;
+display: inline-block;
+margin: -1px;
+  /*padding: 16px;*/
+width: 25px; /* 60*/
+height: 25px;
+font-size:16px;
+-moz-border-radius:50%;
+-webkit-border-radius:50%;
+border-radius: 50%;
+border: 1px solid #fff;
+background: transparent; /*#ececec;ebebeb*/
+color: #fff;
+
+text-align:center;
+/*vertical-align: middle;*/
+}
+
+.icon-circle-large {
+  width: 100px;
+  height: 100px;
+  font-size: 64px; /* 64, originally 60 */
+  padding: 16px;
+}
+
+.icon-circle-small {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+
+/*.icon-circle i, .icon-circle-small i, .icon-circle-large i { vertical-align: middle; }*/
+
+.icon-circle-outline {
+ border: 1px solid #fff;
+ background: transparent;
+ color: #fff;
+ /*color: #8a6de9;*/
+}
+
+.icon-circle-outline i {  }
+/*icon-circle-bg and icon-circle and circle-bg*/

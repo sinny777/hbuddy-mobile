@@ -66,6 +66,7 @@ export class PlaceAreasPage {
         error => {
             if(error.status == 401){
               this.events.publish("auth:required", error);
+              cb(error, null);
             }else{
               cb(error, null);
             }

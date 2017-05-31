@@ -70,6 +70,7 @@ export class PlacesPage {
         error => {
             if(error.status == 401){
               this.events.publish("auth:required", error);
+              cb(error, null);
             }else{
               cb(error, null);
             }
@@ -113,7 +114,7 @@ export class PlacesPage {
       },
       error => {
           if(error.status == 401){
-            this.events.publish("auth:required", error);
+            this.events.publish("auth:required", error);            
           }else{
             console.log("ERROR: >>> ", error);
           }

@@ -1,5 +1,33 @@
 {
   "demo": {
+    "deviceTypes": [
+      "ac",
+      "balcony",
+      "bulb",
+      "camera",
+      "cfl",
+      "cieling-fan",
+      "coffee-machine",
+      "cooler",
+      "device",
+      "door-close",
+      "door-open",
+      "fan",
+      "filter",
+      "fridge",
+      "hanging-lamp",
+      "humidity",
+      "microwave",
+      "motor",
+      "music",
+      "socket",
+      "speakers",
+      "table-lamp",
+      "temperature",
+      "tv",
+      "washing-machine",
+      "window"
+    ],
     "currentUser": {"username": "demo", "password": "demo", "type": "demo"},
     "groups": [
         {

@@ -9,25 +9,71 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding class="background">
 
-  <ion-list *ngFor="let board of selectedPlaceArea.boards">
-    <ion-item *ngFor="let device of board.devices">
-        <ion-avatar item-left>
-            <ion-icon name="flaticon-{{device.type}}" color="device{{device.status}}"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          {{device.title}} |
-          <button ion-button icon-center clear (click)="editDevice(device);">
-              <ion-icon name="create" ></ion-icon>
-          </button>
-          <p>{{device.updatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
-        </ion-label>
+  <div *ngIf="showDevices">
+        <ion-list *ngFor="let board of selectedPlaceArea.boards">
+          <!-- <ion-list-header>
+            List of Devices
+          </ion-list-header> -->
 
-        <ion-toggle [(ngModel)]="device.value" (click)="deviceChanged(board, device);"></ion-toggle>
-    </ion-item>
+              <ion-item *ngFor="let device of board.devices">
+                  <ion-avatar item-left>
+                      <ion-icon name="flaticon-{{device.type}}" color="device{{device.status}}"></ion-icon>
+                  </ion-avatar>
+                  <ion-label>
+                    {{device.title}} |
+                    <button class="title-btn" ion-button icon-left clear small (click)="showEditDevicePanel(device);">
+                      <ion-icon name="create"></ion-icon>
+                    </button>
+                    <!-- <p>{{device.description}}</p> -->
+                    <p>{{device.updatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
+                  </ion-label>
+                  <ion-toggle [(ngModel)]="device.value" (click)="deviceChanged(board, device);"></ion-toggle>
 
-  </ion-list>
+              </ion-item>
+        </ion-list>
+
+  </div>
+
+  <ion-card *ngIf="showEditDevice">
+    <ion-card-header>
+       Update {{selectedDevice.title}}
+    </ion-card-header>
+    <ion-card-content>
+        <ion-list no-line>
+            <ion-item>
+              <ion-label stacked>Device Type</ion-label>
+              <ion-select class="small" [(ngModel)]="selectedDevice.type" >
+                <ion-option *ngFor="let type of deviceTypes" value="{{type}}">
+                    {{type}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Device Title</ion-label>
+              <ion-input type="text" [(ngModel)]="selectedDevice.title"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked >Description</ion-label>
+              <ion-textarea type="text" [(ngModel)]="selectedDevice.description"></ion-textarea>
+            </ion-item>
+
+            <ion-row>
+                <ion-col>
+                    <button ion-button block outline  (click)='saveDevice(selectedDevice);'>
+                      Submit
+                    </button>
+                </ion-col>
+                <ion-col>
+                    <button ion-button block outline  (click)='dismiss();'>
+                      Cancel
+                    </button>
+                </ion-col>
+            </ion-row>
+
+        </ion-list>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
