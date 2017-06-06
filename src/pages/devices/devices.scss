@@ -1,7 +1,7 @@
 page-devices {
 
   .background {
-    background: url('../assets/images/bg23.jpg') center;
+    background: url('../assets/images/room2.jpg') center;
     background-size: cover;
   }
 
@@ -27,8 +27,8 @@ page-devices {
 
   .toolbar {
     .toolbar-background {
-       //background: transparent;
-      // background: rgba(0, 0, 0, 0.5);
+      //  background: transparent;  
+       background: rgba(0, 0, 0, 0.5);
     }
 
     .toolbar-title{
@@ -72,7 +72,7 @@ page-devices {
 	}
 
 	.item {
-		margin-bottom: 10px;
+		margin-bottom: 1px;
 		// background: rgba(255, 255, 255, 0.5);
     background: rgba(0, 0, 0, 0.5);
 		border: medium none;
