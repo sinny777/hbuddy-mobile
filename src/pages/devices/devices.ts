@@ -35,10 +35,18 @@ export class DevicesPage {
         let msg: any = JSON.parse(message.payloadString);
         this.refreshBoard(msg);
     });
-    this.sharedProvider.presentLoading("Fetching devices...");
-    this.fetchBoardsAndDevices(this.selectedPlaceArea, false, (err, boards) => {
-        this.selectedPlaceArea.boards = boards;
+    this.sharedProvider.presentLoading("Fetching boards...");
+    this.fetchBoards(this.selectedPlaceArea, false, (err, boards) => {
+        // this.selectedPlaceArea.boards = boards;
         this.sharedProvider.dismissLoading();
+        if(boards && boards.length > 0){
+            this.sharedProvider.presentLoading("Fetching devices...");
+              for(let board of boards){
+                this.fetchDevices(board, false, (err, devices) => {
+                    this.sharedProvider.dismissLoading();
+                });
+              }
+        }
     });
   }
 
@@ -67,13 +75,17 @@ export class DevicesPage {
 
   doRefresh(refresher){
     console.log("IN doRefresh for BoardsAndDevices: >> ");
-    this.fetchBoardsAndDevices(this.selectedPlaceArea, true, (err, boards) => {
-        this.selectedPlaceArea.boards = boards;
-        refresher.complete();
+    this.fetchBoards(this.selectedPlaceArea, true, (err, boards) => {
+        // this.selectedPlaceArea.boards = boards;
+        for(let board of boards){
+          this.fetchDevices(board, true, (err, devices) => {
+              refresher.complete();
+          });
+        }        
     });
   }
 
-  fetchBoardsAndDevices(placeArea, refresh, cb){
+  fetchBoards(placeArea, refresh, cb){
     console.log("In fetchBoardsAndDevices: >>> ", placeArea);
     if(!placeArea.boards || refresh){
       this.hbuddyProvider.fetchBoards(placeArea).then( boards => {
@@ -93,6 +105,26 @@ export class DevicesPage {
     }
   }
 
+  fetchDevices(board, refresh, cb){
+    console.log("In fetchDevices: >>> ", board);
+    if(!board.devices || refresh){
+      this.hbuddyProvider.fetchDevices(board).then( devices => {
+        console.log("Fetched Devices:  ", devices);
+        board.devices = devices;
+        cb(null, board.devices);
+      },
+      error => {
+          if(error.status == 401){
+            this.events.publish("auth:required", error);
+          }else{
+            cb(error, null);
+          }
+      });
+    }else{
+        cb(null, board.devices);
+    }
+  }
+
   deviceChanged(board, device){
     // console.log("IN deviceChanged: >> ", device);
     if(device.status == 'ON'){
@@ -103,7 +135,7 @@ export class DevicesPage {
     		device.value = 1;
     }
 
-    let topic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/evt/gateway/fmt/json";
+    let topic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
     let msg = {
                 d:{
                     gatewayId: this.selectedPlace.gatewayId,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Events } from 'ionic-angular';
 // import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
@@ -108,11 +108,32 @@ export class HbuddyProvider {
     let findReq: any = {
     				filter:{
         			  		 where: {"and": [{"connectedToId": placeArea.id},
-        			  		                 {"status": "active"}
+        			  		                 {"status": "ACTIVE"}
         			  		 				]}
     								}
     						};
     let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Boards?";
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    this.reqOptions.params = findReq;
+    return this.http.get(GET_URL, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
+  fetchDevices(board): Promise<any>{
+    console.log("IN hbuddyProvider.fetchDevices: >> ", board.id);
+    if(this.sharedProvider.isDemoAccount()){
+        return this.sharedProvider.getDemoData("devices");
+    }
+
+    let findReq: any = {
+    				filter:{
+        			  		 where: {"parentId": board.uniqueIdentifier}
+    								}
+    						};
+    let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Devices?";
     this.authProvider.setAuthHeaders();
     this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
     this.reqOptions.params = findReq;
@@ -189,6 +210,29 @@ export class HbuddyProvider {
     return this.http.put(POST_URL, board, this.reqOptions)
     .toPromise()
     .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
+  startDetection(){
+       var headers = new Headers();
+      //  headers.append('Content-Type', 'application/json');
+     
+      let GET_URL: string = this.sharedProvider.CONFIG.GATEWAY_ENDPOINT + "/0/detection/start";
+      this.reqOptions = new RequestOptions({headers: headers});
+      return this.http.get(GET_URL, this.reqOptions)
+      .toPromise()
+      .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
+  pauseDetection(){
+      var headers = new Headers();
+      //  headers.append('Content-Type', 'application/json');     
+      let GET_URL: string = this.sharedProvider.CONFIG.GATEWAY_ENDPOINT + "/0/detection/pause";
+      this.reqOptions = new RequestOptions({headers: headers});
+      return this.http.get(GET_URL, this.reqOptions)
+      .toPromise()
+      .then(this.extractData)
           .catch(this.handleErrorPromise);
   }
 

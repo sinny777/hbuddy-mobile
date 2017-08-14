@@ -23,6 +23,7 @@ import { GroupsPage } from '../pages/groups/groups';
 import { SettingsPage } from '../pages/settings/settings';
 import { GatewayPage } from '../pages/gateway/gateway';
 import { ContactPage } from '../pages/contact/contact';
+import { CamerasPage } from '../pages/cameras/cameras';
 
 import { AuthProvider } from '../providers/auth-provider';
 import { HbuddyProvider } from '../providers/hbuddy-provider';
@@ -63,7 +64,8 @@ const cloudSettings: CloudSettings = {
     GroupsPage,
     SettingsPage,
     GatewayPage,
-    ContactPage
+    ContactPage,
+    CamerasPage
   ],
   imports: [
     HttpModule,
@@ -85,7 +87,8 @@ const cloudSettings: CloudSettings = {
     GroupsPage,
     SettingsPage,
     GatewayPage,
-    ContactPage
+    ContactPage,
+    CamerasPage
   ],
   providers: [
     StatusBar,

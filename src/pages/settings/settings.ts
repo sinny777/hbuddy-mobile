@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { SharedProvider } from '../../providers/shared-provider';
 
 import { GatewayPage } from '../gateway/gateway';
+import { CamerasPage } from '../cameras/cameras';
 
 
 @Component({
@@ -36,6 +37,11 @@ export class SettingsPage {
   showConfigureGateway(){
     console.log("IN showConfigureGateway: >>> ");
     this.navCtrl.push(GatewayPage, {});
+  }
+
+  showCameras(){
+    console.log("IN showCameras: >>> ");
+    this.navCtrl.push(CamerasPage, {});
   }
 
   toggleNotifications(){

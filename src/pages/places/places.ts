@@ -63,7 +63,7 @@ export class PlacesPage {
           cb(null, placesInSession);
       }else{
         this.hbuddyProvider.fetchUserPlaces(this.sharedProvider.getCurrentUser()).then( places => {
-          console.log("Fetched User Places:  ", places);
+          console.log("Fetched User Places:  ", JSON.stringify(places));
           this.sharedProvider.setSessionData("places", places);
           cb(null, places);
         },
@@ -114,7 +114,7 @@ export class PlacesPage {
       },
       error => {
           if(error.status == 401){
-            this.events.publish("auth:required", error);            
+            this.events.publish("auth:required", error);
           }else{
             console.log("ERROR: >>> ", error);
           }

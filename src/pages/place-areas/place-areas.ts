@@ -37,11 +37,12 @@ export class PlaceAreasPage {
 
   ionViewDidLoad() {
     if(!this.sharedProvider.isDemoAccount()){
-      let placeTopic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/evt/gateway/fmt/json";
+      let placeTopic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
       this.connectionOptions.subscribeToTopic = placeTopic;
       this.mqttProvider.connectMQTT(this.connectionOptions);
     }
     this.sharedProvider.presentLoading("Fetching place areas...");
+    console.log("selectedPlace: >>>> ", JSON.stringify(this.selectedPlace));
     this.getPlaceAreas(false, (err, placeAreas) =>{
       this.placeAreas = placeAreas;
       this.sharedProvider.dismissLoading();

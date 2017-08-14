@@ -14,21 +14,23 @@ export class SharedProvider {
   private loader: any;
 
   public CONFIG = {
-                    API_BASE_URL: "http://hukam-web.mybluemix.net/api",
+                    API_BASE_URL: "https://hbuddy-dev.mybluemix.net/api",
                     GATEWAY_TYPE: "HukamGateway",
                     MQTT_OPTIONS: {
-                                    api_key: "a-o6oosq-dyotpfmyhq",
-                                    auth_token: "skJ0-ZuchsIfN7cwFW",
-                                    orgId: "o6oosq",
-                                    clientId: "a:o6oosq:",
-                                    hostname: "o6oosq.messaging.internetofthings.ibmcloud.com",
+                                    api_key: "a-rqeofj-maegv4oxmm",
+                                    auth_token: "1@UiJCNqja-weuMXyK",
+                                    orgId: "rqeofj",
+                                    clientId: "a:rqeofj:",
+                                    hostname: "rqeofj.messaging.internetofthings.ibmcloud.com",
                                     port: 8883,
                                     protocol: "https",
                                     connectOnCreate: false,
                                     path: '/mqtt',
                                     keepAliveInterval: 3600,
                                     useSSL: true
-                                  }
+                                  },
+                    "GATEWAY_ENDPOINT": "http://hbuddy-gateway.local",
+                    "CAMERA_PUBLIC_URL": "https://versional-dingo-6778.dataplicity.io/"                   
                   };
 
   constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
@@ -106,7 +108,7 @@ export class SharedProvider {
             }, (rej) => {
               console.error("Could not load local data", rej)
               cb(rej, null);
-            });            
+            });
   }
 
   public setCurrentUser(user){

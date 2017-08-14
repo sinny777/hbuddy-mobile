@@ -27,7 +27,6 @@ export class AuthProvider {
   }
 
   public login(credentials, cb){
-    // console.log("Credentials: >> ", JSON.stringify(credentials));
     this.refreshHeaders();
     if(credentials.email == "demo" && credentials.password == "demo"){
       this.sharedProvider.getDemoData("currentUser").then(dummyUser =>{

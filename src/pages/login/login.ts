@@ -24,20 +24,22 @@ export class LoginPage {
     this.nav = nav;
   }
 
-  errorAlert(_message) {
+  errorAlert(_message, err) {
+    console.log("\n\nerrorAlert: >> ", JSON.stringify(err));
       let alert: any = this.alertCtrl.create({
         title: 'ERROR',
         subTitle: _message,
         buttons: ['OK']
       });
       alert.present();
+      this.sharedProvider.dismissLoading();
     }
 
   handleLogin(){
     this.sharedProvider.presentLoading("Please wait...");
     this.authProvider.login(this.credentials, (err, user) => {
         if(err){
-          this.errorAlert("Invalid Credentials Entered !");
+          this.errorAlert("Invalid Credentials Entered !", err);
         }
         if(user){
             console.log("SUCCESSFULLY LOGGED IN >>> ", user);
@@ -62,8 +64,7 @@ export class LoginPage {
   handleGoogleLogin(){
       this.authProvider.handleGoogleLogin((err, user) => {
         if(err){
-          console.log("Erron in handleGoogleLogin: >> ", err);
-          this.errorAlert("Erron in Google Login !");
+          this.errorAlert("Erron in Google Login !", err);
           return false;
         }
         console.log("SUCCESSFULLY LOGGED IN >>> ", JSON.stringify(user));

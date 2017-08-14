@@ -44,7 +44,7 @@
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "ng2-mqtt": "^0.1.2",
-        "phonegap-plugin-push": "^1.10.3",
+        "phonegap-plugin-push": "^1.10.5",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.4.0",
         "zone.js": "^0.8.10"
@@ -89,11 +89,11 @@
                 "BLUETOOTH_USAGE_DESCRIPTION": " "
             },
             "cordova-plugin-network-information": {},
-            "cordova-plugin-googleplus": {
-                "REVERSED_CLIENT_ID": "com.googleusercontent.apps.874807563899-330tu0d1vec4vkbbu9l3tefk8e231q4n"
-            },
             "phonegap-plugin-push": {
                 "SENDER_ID": "874807563899"
+            },
+            "cordova-plugin-googleplus": {
+                "REVERSED_CLIENT_ID": "com.googleusercontent.apps.874807563899-0csghqcj42sdmlsi4sbgm0rb6vhsas3f"
             }
         },
         "platforms": [

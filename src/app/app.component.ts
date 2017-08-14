@@ -8,6 +8,7 @@ import { LoginPage } from '../pages/login/login';
 import { PlacesPage } from '../pages/places/places';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { ContactPage } from '../pages/contact/contact';
+// import { CamerasPage } from '../pages/cameras/cameras';
 
 import { AuthProvider } from '../providers/auth-provider';
 import { SharedProvider } from '../providers/shared-provider';
@@ -47,7 +48,7 @@ export class MyApp {
               console.log("get currentUser from Storage: >> ", user);
                 if(user && user.id){
                     this.sharedProvider.setCurrentUser(user);
-                    this.rootPage = PlacesPage;
+                    this.rootPage = PlacesPage;                    
                 }else{
                     this.rootPage = LoginPage;
                 }
