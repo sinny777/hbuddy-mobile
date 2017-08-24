@@ -1,6 +1,6 @@
 {
   "name": "hbuddy-mobile-v2",
   "app_id": "1176742f",
-  "v2": true,
-  "typescript": true
+  "integrations": {},
+  "type": "ionic-angular"
 }

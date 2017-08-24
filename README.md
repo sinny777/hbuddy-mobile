@@ -19,6 +19,8 @@ Run following commands to add Platforms:
 cordova platform update android
 cordova platform add ios@4.1.0
 ```
+`cordova plugin rm phonegap-plugin-push`
+`cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save`
 
 *Step 2*
 run below command for running the app and verifying on browser

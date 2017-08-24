@@ -1,4 +1,4 @@
-import { Component, SecurityContext } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
 
@@ -26,7 +26,7 @@ export class CamerasPage {
 
   startDetection(){
     this.hbuddyProvider.startDetection().then(()=>{
-        console.log("Motion Detection Started ");       
+        console.log("Motion Detection Started ");
       },
       error => {
           console.log("ERROR: >> ", error);
@@ -35,7 +35,7 @@ export class CamerasPage {
 
   pauseDetection(){
     this.hbuddyProvider.pauseDetection().then(()=>{
-        console.log("Motion Detection Paused ");       
+        console.log("Motion Detection Paused ");
       },
       error => {
           console.log("ERROR: >> ", error);
