@@ -55,18 +55,9 @@ export class DevicesPage {
           for(let device of board.devices){
             if(device.parentId == mqttMsg.d.boardId && device.deviceIndex == mqttMsg.d.deviceIndex){
               // console.log("Change in Device: ", device);
-                  device.value = mqttMsg.d.deviceValue;
-                   if(device.value == 0){
-                     device.status = "OFF";
-                   }else{
-                     device.status = "ON";
-                   }
-
-                   if(mqttMsg.d.analogValue){
-                    device.analogValue = mqttMsg.d.analogValue;
-                   }
-
-                   device.updatedAt = new Date();
+                  device.deviceValue = mqttMsg.d.deviceValue;
+                  device.status = mqttMsg.d.status;
+                  device.updatedAt = new Date();
                    console.log("DEVICE UPDATED>> ", device);
              }
           }
@@ -81,7 +72,7 @@ export class DevicesPage {
           this.fetchDevices(board, true, (err, devices) => {
               refresher.complete();
           });
-        }        
+        }
     });
   }
 
@@ -126,13 +117,13 @@ export class DevicesPage {
   }
 
   deviceChanged(board, device){
-    // console.log("IN deviceChanged: >> ", device);
-    if(device.status == 'ON'){
-    		device.status = 'OFF';
-    		device.value = 0;
+    console.log("IN deviceChanged: >> ", device);
+    if(device.status == 1){
+    		device.status = 0;
+    		device.deviceValue = 0;
     }else{
-    		device.status = 'ON';
-    		device.value = 1;
+    		device.status = 1;
+    		device.deviceValue = 1;
     }
 
     let topic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
@@ -141,7 +132,8 @@ export class DevicesPage {
                     gatewayId: this.selectedPlace.gatewayId,
                     boardId: board.uniqueIdentifier,
                     deviceIndex: device.deviceIndex,
-                    deviceValue: device.value
+                    deviceValue: device.deviceValue,
+                    status: device.status
                  }
               };
 
