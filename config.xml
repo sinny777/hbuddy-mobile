@@ -85,14 +85,21 @@
     <plugin name="cordova-plugin-googleplus" spec="^5.1.1">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.874807563899-0csghqcj42sdmlsi4sbgm0rb6vhsas3f" />
     </plugin>
+    <plugin name="cordova-plugin-ionic" spec="~1.1.7">
+        <variable name="APP_ID" value="e162d291" />
+        <variable name="CHANNEL_NAME" value="Production" />
+        <variable name="UPDATE_METHOD" value="background" />
+        <variable name="UPDATE_API" value="https://api.ionicjs.com" />
+        <variable name="MAX_STORE" value="2" />
+    </plugin>
     <plugin name="cordova-plugin-network-information" spec="^1.3.3" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
+    <plugin name="ionic-plugin-deploy" spec="~0.6.7" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="phonegap-plugin-push" spec="~1.10.5">
         <variable name="SENDER_ID" value="874807563899" />
     </plugin>
-    <plugin name="ionic-plugin-deploy" spec="~0.6.7" />
 </widget>
