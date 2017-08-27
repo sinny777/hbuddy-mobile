@@ -37,3 +37,17 @@ Run following commands to build the app for iOS and android
 ionic build ios
 ionic build android
 ```
+
+## SOME IMPORTANT commands
+```
+Sometimes below command is required
+sudo chown -R $USER:$GROUP ~/.ionic
+
+cordova plugin rm phonegap-plugin-push
+cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
+
+ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="330079704089458" --variable APP_NAME="hbuddy"
+
+ionic cordova -d plugin add /Users/gurvindersingh/Documents/development/personal/hukam/repository/phonegap-facebook-plugin --variable APP_ID="330079704089458" --variable APP_NAME="hbuddy"
+
+````

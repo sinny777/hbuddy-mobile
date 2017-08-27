@@ -86,6 +86,31 @@ export class LoginPage {
       });
   }
 
+  handleFacebookLogin(){
+      this.authProvider.handleFacebookLogin((err, user) => {
+        if(err){
+          this.errorAlert("Erron in Facebook Login !", err);
+          return false;
+        }
+        console.log("SUCCESSFULLY LOGGED IN >>> ", JSON.stringify(user));
+        if(!user.type){
+          user.type = "facebook";
+        }
+        this.authProvider.setAuthHeaders();
+        let userId: string = user.id;
+        if(user.userId){
+          userId = user.userId;
+        }
+        this.authProvider.fetchUserSettingsById(userId, (err, userSettings) => {
+          user.userSettings = userSettings;
+          console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
+          this.sharedProvider.setCurrentUser(user);
+          this.updateDeviceRegistrationId();
+          this.nav.setRoot(PlacesPage, {});
+        });
+      });
+  }
+
   updateDeviceRegistrationId(){
       let user: any = this.sharedProvider.getCurrentUser();
       let registrationId: string = this.sharedProvider.getSessionData("registrationId");

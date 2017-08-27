@@ -7,6 +7,7 @@ import { Network } from '@ionic-native/network';
 import { BLE } from '@ionic-native/ble';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from '@ionic-native/facebook';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { MyApp } from './app.component';
@@ -101,6 +102,7 @@ const cloudSettings: CloudSettings = {
     Push,
     Network,
     GooglePlus,
+    Facebook,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

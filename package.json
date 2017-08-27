@@ -21,6 +21,7 @@
         "@angular/platform-browser-dynamic": "4.0.2",
         "@ionic-native/ble": "^3.7.0",
         "@ionic-native/core": "^3.7.0",
+        "@ionic-native/facebook": "^4.2.0",
         "@ionic-native/google-plus": "^3.7.0",
         "@ionic-native/network": "^3.7.0",
         "@ionic-native/push": "^3.7.0",
@@ -34,6 +35,7 @@
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
+        "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-googleplus": "^5.1.1",
         "cordova-plugin-network-information": "^1.3.3",
         "cordova-plugin-splashscreen": "^4.0.3",
@@ -44,12 +46,10 @@
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "ng2-mqtt": "^0.1.2",
-        "phonegap-plugin-push": "~1.10.5",
+        "phonegap-plugin-push": "^1.10.5",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.4.0",
-        "zone.js": "^0.8.10",
-        "cordova-plugin-ionic": "~1.1.7",
-        "ionic-plugin-deploy": "~0.6.7"
+        "zone.js": "^0.8.10"
     },
     "devDependencies": {
         "@ionic/app-scripts": "1.3.6",
@@ -97,14 +97,10 @@
             "phonegap-plugin-push": {
                 "SENDER_ID": "874807563899"
             },
-            "cordova-plugin-ionic": {
-                "APP_ID": "e162d291",
-                "CHANNEL_NAME": "Production",
-                "UPDATE_METHOD": "background",
-                "UPDATE_API": "https://api.ionicjs.com",
-                "MAX_STORE": "2"
-            },
-            "ionic-plugin-deploy": {}
+            "cordova-plugin-facebook4": {
+                "APP_ID": "330079704089458",
+                "APP_NAME": "hbuddy"
+            }
         },
         "platforms": [
             "android",

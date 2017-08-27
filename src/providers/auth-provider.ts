@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import 'rxjs/add/operator/map';
 
 import { SharedProvider } from './shared-provider';
@@ -11,7 +12,7 @@ export class AuthProvider {
     public headers: Headers;
     private reqOptions: RequestOptions;
 
-  constructor(public http: Http, public sharedProvider: SharedProvider, private googlePlus: GooglePlus) {
+  constructor(public http: Http, public sharedProvider: SharedProvider, private googlePlus: GooglePlus, private fb: Facebook) {
       this.refreshHeaders();
   }
 
@@ -67,6 +68,16 @@ export class AuthProvider {
       .catch(err => {
         cb(err, null);
       });
+  }
+
+  handleFacebookLogin(cb){
+    this.fb.login(['public_profile', 'email'])
+    .then((res: FacebookLoginResponse) => {
+        cb(null, res);
+    })
+    .catch(err => {
+      cb(err, null);
+    });
   }
 
   public fetchUserSettingsById(userId, cb){

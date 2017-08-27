@@ -1,6 +1,8 @@
 {
   "name": "hbuddy-mobile-v2",
   "app_id": "e162d291",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
