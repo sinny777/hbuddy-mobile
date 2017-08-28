@@ -82,7 +82,7 @@ export class AuthProvider {
 
   public fetchUserSettingsById(userId, cb){
     if(!userId){
-        cb(new Error("No UserSettings Found"), null);
+        cb(new Error("No UserSettings Found for null UserId "), null);
     }else{
         if(this.sharedProvider.isDemoAccount()){
            cb(null, {});
@@ -90,6 +90,7 @@ export class AuthProvider {
         }
 
         this.setAuthHeaders();
+        console.log("Find UserSettings for : ", userId); 
         this.reqOptions = new RequestOptions({headers: this.headers});
         let findReq: any = {filter: {where: {or: [{userId: userId}]}}};
         this.reqOptions.params = findReq;

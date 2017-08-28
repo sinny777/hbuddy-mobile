@@ -23,17 +23,17 @@ export class HbuddyProvider {
         if(this.sharedProvider.isDemoAccount()){
             return this.sharedProvider.getDemoData("groups");
         }
-        let email: string = userObj.profile && userObj.profile.email;
-      	if(!email){
-      		email = userObj.email;
-      	}
+
         let ownerId: string = userObj.id;
-    		    	if(userObj.userId){
-    		    		ownerId = userObj.userId;
-    		    	}
+	    	if(userObj.userId){
+	    		ownerId = userObj.userId;
+	    	}
+        if(!ownerId){
+          return Promise.reject("<<< Cannot fetch Groups for an unknown ownerId >>>>> ");
+        }
         let findReq: any = {
                             filter: {
-    			    			  		            where: {"or": [{"members": {"elemMatch": {"username": {"$eq": email}}}},
+    			    			  		            where: {"or": [{"members": {"elemMatch": {"userId": {"$eq": ownerId}}}},
     			    			  		                {"ownerId": ownerId}]}
     	    				   		             }
                             };
@@ -57,9 +57,12 @@ export class HbuddyProvider {
         }
 
         let ownerId: string = userObj.id;
-              if(userObj.userId){
-                ownerId = userObj.userId;
-              }
+        if(userObj.userId){
+          ownerId = userObj.userId;
+        }
+        if(!ownerId){
+          return Promise.reject("<<< Cannot fetch Places for an unknown ownerId >>>>> ");
+        }
         let findReq: any = {filter: {where: {or: [{ownerId: ownerId}]}}};
         let placeIds: Array<string> = [];
         for (let group of userObj.groups) {
@@ -216,7 +219,7 @@ export class HbuddyProvider {
   startDetection(){
        var headers = new Headers();
       //  headers.append('Content-Type', 'application/json');
-     
+
       let GET_URL: string = this.sharedProvider.CONFIG.GATEWAY_ENDPOINT + "/0/detection/start";
       this.reqOptions = new RequestOptions({headers: headers});
       return this.http.get(GET_URL, this.reqOptions)
@@ -227,7 +230,7 @@ export class HbuddyProvider {
 
   pauseDetection(){
       var headers = new Headers();
-      //  headers.append('Content-Type', 'application/json');     
+      //  headers.append('Content-Type', 'application/json');
       let GET_URL: string = this.sharedProvider.CONFIG.GATEWAY_ENDPOINT + "/0/detection/pause";
       this.reqOptions = new RequestOptions({headers: headers});
       return this.http.get(GET_URL, this.reqOptions)

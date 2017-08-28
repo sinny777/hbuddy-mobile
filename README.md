@@ -16,11 +16,13 @@ Your system should have NodeJs, latest Ionic installed
 *Step 1*
 Run following commands to add Platforms:
 ```
-cordova platform update android
-cordova platform add ios@4.1.0
+ionic cordova platform update android
+ionic cordova platform add ios@4.1.0
 
-cordova plugin rm phonegap-plugin-push
-cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
+ionic cordova plugin rm phonegap-plugin-push
+ionic cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
+
+ionic cordova build ios
 
 ```
 ```

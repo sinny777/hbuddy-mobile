@@ -87,22 +87,28 @@ export class LoginPage {
   }
 
   handleFacebookLogin(){
-      this.authProvider.handleFacebookLogin((err, user) => {
+      this.authProvider.handleFacebookLogin((err, response) => {
         if(err){
           this.errorAlert("Erron in Facebook Login !", err);
           return false;
         }
-        console.log("SUCCESSFULLY LOGGED IN >>> ", JSON.stringify(user));
+        let user = response.authResponse;
+        // console.log("SUCCESSFULLY LOGGED IN >>> ", JSON.stringify(user));
         if(!user.type){
           user.type = "facebook";
         }
+
+        user.userId = user.userID;
+        console.log("Returned user Obj after Facebook Login: >>> ", JSON.stringify(user));
+
         this.authProvider.setAuthHeaders();
-        let userId: string = user.id;
-        if(user.userId){
-          userId = user.userId;
-        }
-        this.authProvider.fetchUserSettingsById(userId, (err, userSettings) => {
+        this.authProvider.fetchUserSettingsById(user.userID, (err, userSettings) => {
+          if(err){
+            console.log("Error while fetching userSettings: >> ", err);
+          }
           user.userSettings = userSettings;
+          user.userId = user.userID;
+          delete user["userID"];
           console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
           this.sharedProvider.setCurrentUser(user);
           this.updateDeviceRegistrationId();
