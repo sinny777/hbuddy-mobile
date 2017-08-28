@@ -216,6 +216,20 @@ export class HbuddyProvider {
           .catch(this.handleErrorPromise);
   }
 
+  callConversation(conversationReq){
+    let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Conversations";
+    if(!conversationReq || !conversationReq.params || !conversationReq.params.input){
+      return Promise.reject("<<< Cannot call Conversation without Text ! >>>>> ");      
+    }
+    console.log("IN hbuddyProvider.callConversation: >>> ", conversationReq);
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.post(POST_URL, conversationReq, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
   startDetection(){
        var headers = new Headers();
       //  headers.append('Content-Type', 'application/json');

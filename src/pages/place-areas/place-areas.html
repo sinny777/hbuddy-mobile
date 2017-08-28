@@ -33,6 +33,14 @@
 
 <ion-content padding class="background">
 
+  <br />
+  <button *ngIf="!isListening" ion-button icon-only class="icon-circle-small icon-circle-outline" (click)="sayCommands();">
+     <ion-icon name="mic"></ion-icon>
+  </button>
+  <button *ngIf="isListening" ion-button icon-only class="icon-circle-small icon-circle-outline" (click)="stopListening();">
+     <ion-icon name="mic-off"></ion-icon>
+  </button>
+
    <div *ngIf="showPlaceAreas">
       <ion-refresher (ionRefresh)="doRefresh($event)">
           <ion-refresher-content></ion-refresher-content>

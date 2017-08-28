@@ -94,8 +94,10 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.874807563899-0csghqcj42sdmlsi4sbgm0rb6vhsas3f" />
     </plugin>
     <plugin name="cordova-plugin-network-information" spec="^1.3.3" />
+    <plugin name="cordova-plugin-speechrecognition" spec="^1.1.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
+    <plugin name="cordova-plugin-tts" spec="^0.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />

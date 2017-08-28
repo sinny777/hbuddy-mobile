@@ -18,12 +18,26 @@
   </div>
 
   <ion-row>
+
+    <ion-col col-8 offset-6>
+      <button *ngIf="!isListening" ion-button icon-only class="card-bottom-btn center icon-circle-small icon-circle-outline" (click)="sayCommands();">
+         <ion-icon name="mic"></ion-icon>
+      </button>
+      <button *ngIf="isListening" ion-button icon-only class="card-bottom-btn center icon-circle-small icon-circle-outline" (click)="stopListening();">
+         <ion-icon name="mic-off"></ion-icon>
+      </button>
+    </ion-col>
+
+  </ion-row>
+
+  <ion-row>
     <ion-col col-6>
       <button ion-button icon-center clear class="card-bottom-btn left" (click)="startDetection();">
         <ion-icon name="play"></ion-icon>
         Play
-      </button>      
+      </button>
     </ion-col>
+
     <ion-col col-6>
       <button ion-button icon-center clear class="card-bottom-btn right" (click)="pauseDetection();">
         <ion-icon name="pause"></ion-icon>

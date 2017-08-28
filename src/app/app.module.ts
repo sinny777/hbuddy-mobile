@@ -9,6 +9,8 @@ import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 import { MyApp } from './app.component';
 
@@ -30,6 +32,7 @@ import { AuthProvider } from '../providers/auth-provider';
 import { HbuddyProvider } from '../providers/hbuddy-provider';
 import { SharedProvider } from '../providers/shared-provider';
 import { MqttProvider } from '../providers/mqtt-provider';
+import { SpeechProvider } from '../providers/speech-provider';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -103,6 +106,9 @@ const cloudSettings: CloudSettings = {
     Network,
     GooglePlus,
     Facebook,
+    SpeechRecognition,
+    SpeechProvider,
+    TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

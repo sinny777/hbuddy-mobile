@@ -4,6 +4,7 @@ import { NavController, NavParams, Events } from 'ionic-angular';
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
 import { MqttProvider } from '../../providers/mqtt-provider'
+import { SpeechProvider } from '../../providers/speech-provider'
 
 import { DevicesPage } from '../devices/devices';
 import { SettingsPage } from '../settings/settings';
@@ -14,6 +15,8 @@ import { SettingsPage } from '../settings/settings';
 })
 export class PlaceAreasPage {
 
+  private isListening: boolean = false;
+  private conversationContext = {"initConversation": false};
   private selectedPlace: any;
   private placeAreas: any;
   private selectedPlaceArea: any;
@@ -25,7 +28,7 @@ export class PlaceAreasPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider,
-              public mqttProvider: MqttProvider, private events: Events) {
+              public mqttProvider: MqttProvider, private events: Events, private speechProvider: SpeechProvider) {
               this.selectedPlace = navParams.get('selectedPlace');
               if(!this.selectedPlace){
                 this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
@@ -54,6 +57,51 @@ export class PlaceAreasPage {
       this.placeAreas = placeAreas;
       refresher.complete();
     });
+  }
+
+  sayCommands(){
+    this.isListening = true;
+    this.speechProvider.sayCommands((err, resp) =>{
+        console.log("FINAL RESULT OF STT: >>>> ", resp);
+        if(resp && resp.length > 0){
+          console.log("FINAL RESULT OF STT at 0 index: >>>> ", resp[0]);
+        }
+        this.isListening = false;
+        var conversationReq = {
+								"params": {
+											"input": resp[0],
+											"context": this.conversationContext
+										}
+								};
+
+        this.hbuddyProvider.callConversation(conversationReq).then( resp => {
+          console.log("Conversation Response: >>> ", JSON.stringify(resp));
+          let conversationResp = resp.conversation.conversationResp;
+          this.conversationContext = conversationResp.context;
+          for(let outputTxt of conversationResp.output.text){
+              let ttsOptions = {
+                "text": outputTxt,
+                "locale": "en-IN",
+                "rate": 1.5
+              };
+              this.speechProvider.convertTTS(ttsOptions);
+          }
+
+        },
+        error => {
+            if(error.status == 401){
+              this.events.publish("auth:required", error);
+            }else{
+              console.log("Error in callConversation: >>> ", err);
+            }
+        });
+
+    });
+  }
+
+  stopListening(){
+    this.speechProvider.stopListening();
+    this.isListening = false;
   }
 
   getPlaceAreas(refresh, cb){
