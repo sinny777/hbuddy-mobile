@@ -30,7 +30,9 @@ export class SharedProvider {
                                     useSSL: true
                                   },
                     "GATEWAY_ENDPOINT": "http://hbuddy-gateway.local",
-                    "CAMERA_PUBLIC_URL": "https://versional-dingo-6778.dataplicity.io/"
+                    "CAMERA_PUBLIC_URL": "https://additive-ferret-6510.dataplicity.io/",
+                    "LIVE_CAM1_STREAM_ID": "He28gcfKwK8",
+                    "LIVE_CAM1_CHANNEL_ID": "UCTIOuYgkoVWhvfuAoU3Wtag"
                   };
 
   constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {

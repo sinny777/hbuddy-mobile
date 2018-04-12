@@ -36,6 +36,7 @@ import { SpeechProvider } from '../providers/speech-provider';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -109,6 +110,7 @@ const cloudSettings: CloudSettings = {
     SpeechRecognition,
     SpeechProvider,
     TextToSpeech,
+    YoutubeVideoPlayer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
