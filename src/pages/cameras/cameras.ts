@@ -22,12 +22,11 @@ export class CamerasPage {
 
   constructor(private domSanitizer: DomSanitizer, public navParams: NavParams, public sharedProvider: SharedProvider,
     public hbuddyProvider: HbuddyProvider, private speechProvider: SpeechProvider, public mqttProvider: MqttProvider, private youtube: YoutubeVideoPlayer) {
-     // this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.sharedProvider.CONFIG.CAMERA_PUBLIC_URL);
+     this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.sharedProvider.CONFIG.CAMERA_PUBLIC_URL);
      // this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/"+this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID+"?wmode=opaque&modestbranding=1&autohide=1&controls=1&showinfo=0&color=red&vq=hd720");
      // this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/live_stream?channel="+this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID);
      // https://www.youtube.com/watch?v=Kx4gZRAB10o&wmode=opaque&modestbranding=1&autohide=1&controls=1&showinfo=0&color=red&vq=hd720
-     // https://www.youtube.com/embed/live_stream?channel=UCTIOuYgkoVWhvfuAoU3Wtag
-
+    console.log("this.cameraSrc: >>> ", this.cameraSrc);
     this.selectedPlace = navParams.get('selectedPlace');
     if(!this.selectedPlace){
       this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
@@ -36,20 +35,17 @@ export class CamerasPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Cameras');
-    this.startDetection();
+    // this.startDetection();
   }
 
   startDetection(){
-    /*
     this.hbuddyProvider.startDetection().then(()=>{
         console.log("Motion Detection Started ");
       },
       error => {
           console.log("ERROR: >> ", error);
       });
-      */
-     console.log("IN startDetection: >>> " +this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID);
-     this.youtube.openVideo(this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID);
+     // this.youtube.openVideo(this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID);
   }
 
   pauseDetection(){
