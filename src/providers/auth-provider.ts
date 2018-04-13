@@ -90,7 +90,7 @@ export class AuthProvider {
         }
 
         this.setAuthHeaders();
-        console.log("Find UserSettings for : ", userId); 
+        console.log("Find UserSettings for : ", userId);
         this.reqOptions = new RequestOptions({headers: this.headers});
         let findReq: any = {filter: {where: {or: [{userId: userId}]}}};
         this.reqOptions.params = findReq;
@@ -107,7 +107,7 @@ export class AuthProvider {
 
   public saveUserSettings(userSettings, cb){
     console.log("IN saveUserSettings: >>> ", userSettings);
-    if(!userSettings){
+    if(!userSettings || !userSettings.userId){
         cb(new Error("No UserSettings to Save"), null);
     }else{
         this.setAuthHeaders();
