@@ -6,14 +6,44 @@
     <ion-title >
       Camera Views
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="icon-circle-small" (click)="viewSettings();">
+         <ion-icon name="construct"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
 
-  <div class="iframe-holder">
-    <iframe [src]="cameraSrc" frameborder="0" allowfullscreen>
+  <ion-card-content *ngIf="showSettingsPanel">
+    <ion-list no-line>
+
+      <ion-item>
+        <ion-label stacked>Camera Source</ion-label>
+        <ion-input type="text" placeholder="Camera Source URL" [(ngModel)]="cameraSrc"></ion-input>
+      </ion-item>
+
+      <ion-row>
+          <ion-col>
+              <button ion-button block outline  (click)='updateCameraSrc();'>
+                Update
+              </button>
+          </ion-col>
+          <ion-col>
+              <button ion-button block outline  (click)='dismiss();'>
+                Cancel
+              </button>
+          </ion-col>
+      </ion-row>
+
+
+    </ion-list>
+  </ion-card-content>
+
+  <div class="iframe-holder" *ngIf="!showSettingsPanel">
+    <iframe [src]="securityCamera.source | safe: 'resourceUrl'" frameborder="0" allowfullscreen>
     </iframe>
   </div>
 

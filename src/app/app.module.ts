@@ -38,6 +38,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
+import { MinutesConversionPipe } from '../pipes/humanize-mins.pipe';
+import { SafePipe } from '../pipes/safe.pipe';
+
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': '1176742f'
@@ -59,6 +62,8 @@ const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
+    MinutesConversionPipe,
+    SafePipe,
     LoginPage,
     PlacesPage,
     DashboardPage,

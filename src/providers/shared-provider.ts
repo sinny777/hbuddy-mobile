@@ -14,7 +14,7 @@ export class SharedProvider {
   private loader: any;
 
   public CONFIG = {
-                    API_BASE_URL: "https://hbuddy-dev.mybluemix.net/api",
+                    API_BASE_URL: "http://api.hukamtechnologies.com/api",
                     GATEWAY_TYPE: "HukamGateway",
                     MQTT_OPTIONS: {
                                     api_key: "a-rqeofj-maegv4oxmm",
@@ -30,7 +30,7 @@ export class SharedProvider {
                                     useSSL: true
                                   },
                     "GATEWAY_ENDPOINT": "http://hbuddy-gateway.local",
-                    "CAMERA_PUBLIC_URL": "https://additive-ferret-6510.dataplicity.io/"                  
+                    "CAMERA_PUBLIC_URL": "https://additive-ferret-6510.dataplicity.io"
                   };
 
   constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
@@ -47,7 +47,7 @@ export class SharedProvider {
            gcmSandbox: true,
            alert: true,
            badge: true,
-           sound: true
+           sound: "ping.aiff"
          },
          windows: {}
       };

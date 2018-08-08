@@ -71,18 +71,10 @@ export class LoginPage {
         if(!user.type){
           user.type = "google";
         }
-        this.authProvider.setAuthHeaders();
-        let userId: string = user.id;
-        if(user.userId){
-          userId = user.userId;
-        }
-        this.authProvider.fetchUserSettingsById(userId, (err, userSettings) => {
-          user.userSettings = userSettings;
-          console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
-          this.sharedProvider.setCurrentUser(user);
-          this.updateDeviceRegistrationId();
-          this.nav.setRoot(PlacesPage, {});
+        this.syncUserWithBackendApp(user, "google", function(err, resp){
+            console.log("syncUserWithBackendApp RESP: >> ", resp);
         });
+
       });
   }
 
@@ -115,6 +107,31 @@ export class LoginPage {
           this.nav.setRoot(PlacesPage, {});
         });
       });
+  }
+
+  syncUserWithBackendApp(externalUserObj, provider, cb){
+    var credentials:any = {};
+    credentials.accessToken = externalUserObj.accessToken;
+    credentials.refreshToken = externalUserObj.refreshToken;
+
+     var profile: any = {};
+     profile.id = externalUserObj.userId;
+     profile.emails = [{type:'account', value: externalUserObj.email}];
+     var payload: any = {"provider": provider, "authScheme": "oAuth 2.0", "profile": profile, "credentials": credentials, "options": {autoLogin:true} };
+
+     this.authProvider.loginWithThirdParty(payload, (err, userData) => {
+       // console.log("\n\nRESP from loginWithThirdParty:>>  ", userData);
+       this.authProvider.setAuthHeaders();
+       this.authProvider.fetchUserSettingsById(userData.identity.userId, (err, userSettings) => {
+         userData.user.userSettings = userSettings;
+         console.log("\n\nUser with userSettings: >>> ", JSON.stringify(userData.user));
+         this.sharedProvider.setCurrentUser(userData.user);
+         this.updateDeviceRegistrationId();
+         this.nav.setRoot(PlacesPage, {});
+       });
+       cb(err, "USER LOGGEDIN SUCCESSFULLY >>>>>>>> ");
+     });
+
   }
 
   updateDeviceRegistrationId(){

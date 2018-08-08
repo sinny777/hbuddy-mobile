@@ -2,7 +2,7 @@
 <widget id="com.hukam.hbuddy117117" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>hbuddy</name>
     <description>hBuddy - Hukam Home Automation</description>
-    <author email="sinny777@gmail.com" href="http://hbuddy.hukam.in/">Hukam Team</author>
+    <author email="sinny777@gmail.com" href="http://www.hukamtechnologies.com/">Hukam Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
@@ -29,6 +29,7 @@
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
         <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
         <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
         <splash density="land-ldpi" src="resources/android/splash/drawable-land-ldpi-screen.png" />
         <splash density="land-mdpi" src="resources/android/splash/drawable-land-mdpi-screen.png" />
         <splash density="land-hdpi" src="resources/android/splash/drawable-land-hdpi-screen.png" />
@@ -41,7 +42,6 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -80,8 +80,6 @@
         <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <engine name="android" spec="^6.2.3" />
-    <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
         <variable name="BLUETOOTH_USAGE_DESCRIPTION" value=" " />
     </plugin>
@@ -100,10 +98,12 @@
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
     <plugin name="cordova-plugin-tts" spec="^0.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
-    <plugin name="cordova-plugin-youtube-video-player" spec="^1.0.6" />
-    <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="phonegap-plugin-push" spec="^1.10.5">
+    <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
+    <plugin name="phonegap-plugin-push" spec="^2.2.3">
         <variable name="SENDER_ID" value="874807563899" />
     </plugin>
+    <plugin name="cordova-plugin-youtube-video-player" spec="^1.0.6" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="7.0.0" />
 </widget>

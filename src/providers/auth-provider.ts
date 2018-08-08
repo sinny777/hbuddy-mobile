@@ -11,6 +11,7 @@ export class AuthProvider {
 
     public headers: Headers;
     private reqOptions: RequestOptions;
+    private accessToken: any;
 
   constructor(public http: Http, public sharedProvider: SharedProvider, private googlePlus: GooglePlus, private fb: Facebook) {
       this.refreshHeaders();
@@ -22,9 +23,19 @@ export class AuthProvider {
     this.headers.append('Accept', 'application/json');
     this.headers.append("X-IBM-Client-Id", "default");
     this.headers.append("X-IBM-Client-Secret", "SECRET");
-    if(this.sharedProvider.getCurrentUser() && this.sharedProvider.getCurrentUser().id){
-      this.headers.append("Authorization", this.sharedProvider.getCurrentUser().id);
+    if(!this.accessToken){
+      let currentUser = this.sharedProvider.getCurrentUser();
+      if(currentUser){
+        if(currentUser.identity){
+            this.accessToken = currentUser.identity.id;
+        }else if(currentUser.id){
+          this.accessToken = currentUser.id;
+        }
+
+      }
     }
+    this.headers.append("Authorization", this.accessToken);
+    console.log("ACCESS_TOKEN: >>>> ", this.accessToken);
   }
 
   public login(credentials, cb){
@@ -48,6 +59,7 @@ export class AuthProvider {
             user.profile = user.user;
             delete user["user"];
           }
+          this.accessToken = user.id;
           this.sharedProvider.setCurrentUser(user);
           cb(null, user);
       }, (err) => {
@@ -78,6 +90,27 @@ export class AuthProvider {
     .catch(err => {
       cb(err, null);
     });
+  }
+
+  public loginWithThirdParty(payload, cb){
+    console.log("IN loginWithThirdParty: >>> ", payload);
+    if(!payload || !payload.profile){
+        cb(new Error("Invalid data for login with ThirtParty: >> "), null);
+    }else{
+        this.setAuthHeaders();
+        this.reqOptions = new RequestOptions({headers: this.headers});
+        let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserIdentities/login";
+        return this.http.post(POST_URL, payload, this.reqOptions)
+        .subscribe(resp => {
+            var user = resp.json();
+            this.accessToken = user.identity.id;
+            this.sharedProvider.setCurrentUser(user.user);
+            cb(null, user);
+        }, (err) => {
+          console.log("Error in loginWithThirdParty:>> ", err);
+          cb(err, null);
+        });
+    }
   }
 
   public fetchUserSettingsById(userId, cb){

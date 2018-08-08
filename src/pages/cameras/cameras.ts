@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
-
+// import { DomSanitizer } from '@angular/platform-browser';
 import { SharedProvider } from '../../providers/shared-provider';
 import { HbuddyProvider } from '../../providers/hbuddy-provider';
 import { SpeechProvider } from '../../providers/speech-provider';
@@ -17,16 +16,16 @@ export class CamerasPage {
 
   private selectedPlace: any;
   private isListening: boolean = false;
-  cameraSrc: SafeResourceUrl;
-  htmlContent: any;
+  securityCamera: any = {"source": ""};
+  cameraSrc: any;
+  showSettingsPanel: boolean = false;
 
-  constructor(private domSanitizer: DomSanitizer, public navParams: NavParams, public sharedProvider: SharedProvider,
+  constructor(public navParams: NavParams, public sharedProvider: SharedProvider,
     public hbuddyProvider: HbuddyProvider, private speechProvider: SpeechProvider, public mqttProvider: MqttProvider, private youtube: YoutubeVideoPlayer) {
-     this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.sharedProvider.CONFIG.CAMERA_PUBLIC_URL);
-     // this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/"+this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID+"?wmode=opaque&modestbranding=1&autohide=1&controls=1&showinfo=0&color=red&vq=hd720");
-     // this.cameraSrc = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/live_stream?channel="+this.sharedProvider.CONFIG.LIVE_CAM1_STREAM_ID);
      // https://www.youtube.com/watch?v=Kx4gZRAB10o&wmode=opaque&modestbranding=1&autohide=1&controls=1&showinfo=0&color=red&vq=hd720
-    console.log("this.cameraSrc: >>> ", this.cameraSrc);
+    this.cameraSrc = this.sharedProvider.CONFIG.CAMERA_PUBLIC_URL;
+    this.securityCamera.source = this.cameraSrc;
+    console.log("this.securityCamera: 1 >>> ", this.securityCamera);
     this.selectedPlace = navParams.get('selectedPlace');
     if(!this.selectedPlace){
       this.selectedPlace = this.sharedProvider.getSessionData("selectedPlace");
@@ -36,6 +35,15 @@ export class CamerasPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad Cameras');
     // this.startDetection();
+  }
+
+  showSettings(){
+    this.showSettingsPanel = true;
+  }
+
+  updateCameraSrc(){
+    this.securityCamera.source = this.cameraSrc;
+    this.showSettingsPanel = false;
   }
 
   startDetection(){
@@ -77,6 +85,11 @@ export class CamerasPage {
   stopListening(){
     this.speechProvider.stopListening();
     this.isListening = false;
+  }
+
+  dismiss(){
+      this.cameraSrc = this.sharedProvider.CONFIG.CAMERA_PUBLIC_URL;
+      this.showSettingsPanel = false;
   }
 
 }

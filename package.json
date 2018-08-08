@@ -21,41 +21,42 @@
         "@angular/platform-browser-dynamic": "4.0.2",
         "@ionic-native/ble": "^3.7.0",
         "@ionic-native/core": "^3.7.0",
-        "@ionic-native/facebook": "^4.2.0",
+        "@ionic-native/facebook": "^4.11.0",
         "@ionic-native/google-plus": "^3.7.0",
         "@ionic-native/network": "^3.7.0",
-        "@ionic-native/push": "^3.7.0",
-        "@ionic-native/speech-recognition": "^4.2.0",
+        "@ionic-native/push": "^3.14.0",
+        "@ionic-native/speech-recognition": "^4.11.0",
         "@ionic-native/splash-screen": "3.7.0",
+        "@ionic-native/sqlite": "^4.11.0",
         "@ionic-native/status-bar": "3.7.0",
-        "@ionic-native/text-to-speech": "^4.2.0",
-        "@ionic-native/youtube-video-player": "^4.7.0",
+        "@ionic-native/text-to-speech": "^4.11.0",
+        "@ionic-native/youtube-video-player": "^4.11.0",
         "@ionic/cloud-angular": "^0.12.0",
-        "@ionic/storage": "^2.0.1",
-        "cordova-android": "^6.2.3",
-        "cordova-ios": "^4.4.0",
-        "cordova-plugin-ble-central": "^1.1.4",
-        "cordova-plugin-compat": "^1.1.0",
-        "cordova-plugin-console": "^1.0.7",
-        "cordova-plugin-device": "^1.1.6",
-        "cordova-plugin-facebook4": "^1.9.1",
-        "cordova-plugin-googleplus": "^5.1.1",
-        "cordova-plugin-network-information": "^1.3.3",
-        "cordova-plugin-speechrecognition": "^1.1.2",
-        "cordova-plugin-splashscreen": "^4.0.3",
-        "cordova-plugin-statusbar": "^2.2.3",
+        "@ionic/storage": "^2.1.3",
+        "cordova-android": "7.0.0",
+        "cordova-ios": "^4.5.5",
+        "cordova-plugin-ble-central": "^1.2.2",
+        "cordova-plugin-compat": "^1.2.0",
+        "cordova-plugin-console": "^1.1.0",
+        "cordova-plugin-device": "^1.1.7",
+        "cordova-plugin-facebook4": "^1.10.1",
+        "cordova-plugin-googleplus": "^5.3.0",
+        "cordova-plugin-network-information": "^1.3.4",
+        "cordova-plugin-speechrecognition": "^1.2.0",
+        "cordova-plugin-splashscreen": "^4.1.0",
+        "cordova-plugin-statusbar": "^2.4.2",
         "cordova-plugin-tts": "^0.2.3",
-        "cordova-plugin-whitelist": "^1.3.2",
+        "cordova-plugin-whitelist": "^1.3.3",
         "cordova-plugin-youtube-video-player": "^1.0.6",
-        "cordova-sqlite-storage": "^2.0.4",
+        "cordova-sqlite-storage": "^2.3.3",
         "ionic-angular": "3.1.1",
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "ng2-mqtt": "^0.1.2",
-        "phonegap-plugin-push": "^1.10.5",
+        "phonegap-plugin-push": "^2.2.3",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.4.0",
-        "zone.js": "^0.8.10"
+        "zone.js": "^0.8.26"
     },
     "devDependencies": {
         "@ionic/app-scripts": "1.3.6",
@@ -92,7 +93,6 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-            "cordova-sqlite-storage": {},
             "cordova-plugin-ble-central": {
                 "BLUETOOTH_USAGE_DESCRIPTION": " "
             },
@@ -100,20 +100,21 @@
             "cordova-plugin-googleplus": {
                 "REVERSED_CLIENT_ID": "com.googleusercontent.apps.874807563899-0csghqcj42sdmlsi4sbgm0rb6vhsas3f"
             },
-            "phonegap-plugin-push": {
-                "SENDER_ID": "874807563899"
-            },
             "cordova-plugin-facebook4": {
                 "APP_ID": "330079704089458",
                 "APP_NAME": "hbuddy"
             },
             "cordova-plugin-speechrecognition": {},
             "cordova-plugin-tts": {},
+            "cordova-sqlite-storage": {},
+            "phonegap-plugin-push": {
+                "SENDER_ID": "874807563899"
+            },
             "cordova-plugin-youtube-video-player": {}
         },
         "platforms": [
-            "android",
-            "ios"
+            "ios",
+            "android"
         ]
     }
 }

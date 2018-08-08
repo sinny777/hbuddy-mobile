@@ -37,6 +37,7 @@ export class HbuddyProvider {
     			    			  		                {"ownerId": ownerId}]}
     	    				   		             }
                             };
+        console.log("In fetchUserGroups, findReq: ", JSON.stringify(findReq));
         let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Groups?";
         this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
         this.reqOptions.params = findReq;
@@ -49,7 +50,7 @@ export class HbuddyProvider {
   fetchUserPlaces(userObj): Promise<any>{
 
     return this.fetchUserGroups(userObj).then( groups => {
-        console.log("Fetched User Groups:  ", groups);
+        console.log("Fetched User Groups:  ", JSON.stringify(groups));
         userObj.groups = groups;
 
         if(this.sharedProvider.isDemoAccount()){
@@ -71,6 +72,7 @@ export class HbuddyProvider {
         if(placeIds.length > 0){
           findReq.filter.where.or.push({id: {inq: placeIds}});
         }
+        console.log("In fetchUserPlaces, findReq: ", JSON.stringify(findReq));
         let GET_PLACES_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Places?";
         this.authProvider.setAuthHeaders();
         this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
@@ -219,7 +221,7 @@ export class HbuddyProvider {
   callConversation(conversationReq){
     let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Conversations";
     if(!conversationReq || !conversationReq.params || !conversationReq.params.input){
-      return Promise.reject("<<< Cannot call Conversation without Text ! >>>>> ");      
+      return Promise.reject("<<< Cannot call Conversation without Text ! >>>>> ");
     }
     console.log("IN hbuddyProvider.callConversation: >>> ", conversationReq);
     this.authProvider.setAuthHeaders();

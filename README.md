@@ -16,13 +16,17 @@ Your system should have NodeJs, latest Ionic installed
 *Step 1*
 Run following commands to add Platforms:
 ```
-ionic cordova platform update android
-ionic cordova platform add ios@4.1.0
 
-ionic cordova plugin rm phonegap-plugin-push
-ionic cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
+sudo gem install cocoapods
 
-ionic cordova build ios
+<!-- ionic cordova platform update android -->
+ionic platform add android@6.4.0
+ionic platform add ios@4.5.5
+
+ionic plugin rm phonegap-plugin-push
+ionic plugin add phonegap-plugin-push@2.2.3 --variable SENDER_ID=874807563899 --save
+
+ionic build ios
 
 ```
 ```
@@ -45,7 +49,7 @@ ionic build android
 
 Let’s generate our private key using the keytool command that comes with the JDK. If this tool isn’t found
 
-`keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000`
+`keytool -genkey -v -keystore my-release-key.keystore -alias hbuddy -keyalg RSA -keysize 2048 -validity 10000`
 
 You’ll first be prompted to create a password for the keystore. Then, answer the rest of the nice tools’s questions and when it’s all done, you should have a file called my-release-key.keystore created in the current directory.
 
@@ -53,17 +57,18 @@ Note: Make sure to save this file somewhere safe, if you lose it you won’t be 
 
 To sign the unsigned APK, run the jarsigner tool which is also included in the JDK.  Also make sure you copy the keystore file generated in last step in the same folder as apk file.
 
-`jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk alias_name`
+`jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk hbuddy`
 
 'zipalign -v 4 android-release-unsigned.apk hbuddy.apk'
 
 ## SOME IMPORTANT commands
 ```
+
 Sometimes below command is required
 sudo chown -R $USER:$GROUP ~/.ionic
 
-cordova plugin rm phonegap-plugin-push
-cordova plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
+ionic plugin rm phonegap-plugin-push
+ionic plugin add phonegap-plugin-push --variable SENDER_ID=874807563899 --save
 
 ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="330079704089458" --variable APP_NAME="hbuddy"
 
