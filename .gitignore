@@ -36,3 +36,5 @@ UserInterfaceState.xcuserstate
 package-lock.json
 *.keystore
 .project
+*-info.plist
+google-services.json
