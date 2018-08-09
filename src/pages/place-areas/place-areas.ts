@@ -43,6 +43,10 @@ export class PlaceAreasPage {
       let placeTopic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
       this.connectionOptions.subscribeToTopic = placeTopic;
       this.mqttProvider.connectMQTT(this.connectionOptions);
+
+      this.sharedProvider.subscribeToTopic(this.selectedPlace.gatewayId);
+      console.log("Notifications subscribed to >>>> ", this.selectedPlace.gatewayId);
+
     }
     this.sharedProvider.presentLoading("Fetching place areas...");
     console.log("selectedPlace: >>>> ", JSON.stringify(this.selectedPlace));

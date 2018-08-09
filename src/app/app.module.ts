@@ -5,10 +5,11 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { BLE } from '@ionic-native/ble';
-import { Push } from '@ionic-native/push';
+// import { Push } from '@ionic-native/push';
+import { FCM } from '@ionic-native/fcm';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+// import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 
@@ -41,6 +42,7 @@ import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 import { MinutesConversionPipe } from '../pipes/humanize-mins.pipe';
 import { SafePipe } from '../pipes/safe.pipe';
 
+/*
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': '1176742f'
@@ -58,6 +60,7 @@ const cloudSettings: CloudSettings = {
     }
   }
 };
+*/
 
 @NgModule({
   declarations: [
@@ -81,7 +84,7 @@ const cloudSettings: CloudSettings = {
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    CloudModule.forRoot(cloudSettings),
+    // CloudModule.forRoot(cloudSettings),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
@@ -108,7 +111,8 @@ const cloudSettings: CloudSettings = {
     SharedProvider,
     MqttProvider,
     BLE,
-    Push,
+    FCM,
+    // Push,
     Network,
     GooglePlus,
     Facebook,

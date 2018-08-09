@@ -3,7 +3,9 @@ import { Http } from '@angular/http';
 import { LoadingController, AlertController, Events } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { FCM } from '@ionic-native/fcm';
+// import { Push, PushObject, PushOptions } from '@ionic-native/push';
+
 
 @Injectable()
 export class SharedProvider {
@@ -33,62 +35,56 @@ export class SharedProvider {
                     "CAMERA_PUBLIC_URL": "https://additive-ferret-6510.dataplicity.io"
                   };
 
-  constructor(private storage: Storage, private http: Http, private push: Push, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
+  constructor(private storage: Storage, private http: Http, private fcm: FCM, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
     this.sessionData = {};
   }
 
   initPushNotification(){
-      const options: PushOptions = {
-         android: {
-             senderID: '874807563899'
-         },
-         ios: {
-           senderID: '874807563899',
-           gcmSandbox: true,
-           alert: true,
-           badge: true,
-           sound: "ping.aiff"
-         },
-         windows: {}
-      };
-      const pushObject: PushObject = this.push.init(options);
-      pushObject.on('notification').subscribe((notification: any) => {
-          console.log('Received a notification: >> ', JSON.stringify(notification));
-            //if user using app and push notification comes
-            if (notification.additionalData.foreground) {
-              // if application open, show popup
-              let confirmAlert = this.alertCtrl.create({
-                title: notification.title,
-                message: notification.message,
-                buttons: [{
-                  text: 'Ignore',
-                  role: 'cancel'
-                }, {
-                  text: 'View',
-                  handler: () => {
-                    //TODO: Your logic here
-                    // this.nav.push(DetailsPage, {message: data.message});
-                  }
-                }]
-              });
-              confirmAlert.present();
 
-            } else {
-              //if user NOT using app and push notification comes
-              //TODO: Your logic on click of push notification directly
-              // this.nav.push(DetailsPage, {message: notification.message});
-              this.events.publish("notification:received", notification);
-              console.log("Push notification clicked");
+      this.fcm.getToken().then(token=>{
+        console.log('Device registered: >>> ', JSON.stringify(token));
+        this.setSessionData("registrationId", token);
+        this.subscribeToTopic("hukam");
+      });
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        this.setSessionData("registrationId", token);
+      });
+
+    this.fcm.onNotification().subscribe(notification=>{
+      if(notification.wasTapped){
+        console.log('Received notification in background: >> ', JSON.stringify(notification));
+        //if user NOT using app and push notification comes
+        //TODO: Your logic on click of push notification directly
+        // this.nav.push(DetailsPage, {message: notification.message});
+        this.events.publish("notification:received", notification);
+        console.log("Push notification clicked");
+      } else {
+        console.log("Received notification in foreground: ", JSON.stringify(notification));
+        // if application open, show popup
+        let confirmAlert = this.alertCtrl.create({
+          title: notification.title,
+          message: notification.message,
+          buttons: [{
+            text: 'Ignore',
+            role: 'cancel'
+          }, {
+            text: 'View',
+            handler: () => {
+              //TODO: Your logic here
+              // this.nav.push(DetailsPage, {message: data.message});
             }
-      });
-      pushObject.on('registration').subscribe((registration: any) => {
-          console.log('Device registered: >>> ', JSON.stringify(registration));
-          this.setSessionData("registrationId", registration.registrationId);
-      });
-      pushObject.on('error').subscribe(error => {
-          console.error('Error with Push plugin', error);
-      });
+          }]
+        });
+        confirmAlert.present();
+      }
+    });
 
+    // this.fcm.unsubscribeFromTopic('marketing');
+  }
+
+  public subscribeToTopic(topic){
+      this.fcm.subscribeToTopic(topic);
   }
 
   public initStorage(cb){
