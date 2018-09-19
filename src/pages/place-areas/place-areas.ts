@@ -15,6 +15,7 @@ import { SettingsPage } from '../settings/settings';
 })
 export class PlaceAreasPage {
 
+  private currentUser: any;
   private isListening: boolean = false;
   private conversationContext = {"initConversation": false};
   private selectedPlace: any;
@@ -39,21 +40,32 @@ export class PlaceAreasPage {
   }
 
   ionViewDidLoad() {
+    this.currentUser = this.sharedProvider.getCurrentUser();
+    if(!this.currentUser || !this.currentUser.id || !this.selectedPlace){
+        this.events.publish("auth:required", new Error("User not found !"));
+        return false;
+    }
     if(!this.sharedProvider.isDemoAccount()){
       let placeTopic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
       this.connectionOptions.subscribeToTopic = placeTopic;
       this.mqttProvider.connectMQTT(this.connectionOptions);
-
       this.sharedProvider.subscribeToTopic(this.selectedPlace.gatewayId);
       console.log("Notifications subscribed to >>>> ", this.selectedPlace.gatewayId);
-
     }
+
     this.sharedProvider.presentLoading("Fetching place areas...");
     console.log("selectedPlace: >>>> ", JSON.stringify(this.selectedPlace));
-    this.getPlaceAreas(false, (err, placeAreas) =>{
-      this.placeAreas = placeAreas;
-      this.sharedProvider.dismissLoading();
+    this.getUserSetting((err, settings)  => {
+        if(!settings || !settings.id){
+          settings = {notify: true, syncWithCloud: true, placeId: this.selectedPlace.id};
+        }
+        this.currentUser.settings = settings;
+        this.getPlaceAreas(false, (err, placeAreas) =>{
+          this.placeAreas = placeAreas;
+          this.sharedProvider.dismissLoading();
+        });
     });
+
   }
 
   doRefresh(refresher){
@@ -73,14 +85,14 @@ export class PlaceAreasPage {
         this.isListening = false;
         var conversationReq = {
 								"params": {
-											"input": resp[0],
+											"input": {"text": resp[0]},
 											"context": this.conversationContext
 										}
 								};
 
         this.hbuddyProvider.callConversation(conversationReq).then( resp => {
           console.log("Conversation Response: >>> ", JSON.stringify(resp));
-          let conversationResp = resp.conversation.conversationResp;
+          let conversationResp = resp.conversation;
           this.conversationContext = conversationResp.context;
           for(let outputTxt of conversationResp.output.text){
               let ttsOptions = {
@@ -106,6 +118,21 @@ export class PlaceAreasPage {
   stopListening(){
     this.speechProvider.stopListening();
     this.isListening = false;
+  }
+
+  getUserSetting(cb){
+    this.hbuddyProvider.fetchUserSettings(this.currentUser.id, this.selectedPlace.id).then( settings => {
+      console.log("Fetched UserSettings:  ", settings);
+      cb(null, settings);
+    },
+    error => {
+        if(error.status == 401){
+          this.events.publish("auth:required", error);
+          cb(error, null);
+        }else{
+          cb(error, null);
+        }
+    });
   }
 
   getPlaceAreas(refresh, cb){

@@ -107,6 +107,14 @@ export class SharedProvider {
             });
   }
 
+  public setConfig(config){
+    if(!config || config == null){
+      this.storage.remove("config");
+    }else{
+        this.setStorageData("config", config);
+    }
+  }
+
   public setCurrentUser(user){
     console.log("IN setCurrentUser: >> ", user);
     if(user && user.type && user.type == 'demo'){
@@ -123,6 +131,9 @@ export class SharedProvider {
   }
 
   public getCurrentUser(){
+    this.getStorageData("currentUser", function(currentUser){
+      return currentUser;
+    });
     return this.currentUser;
   }
 

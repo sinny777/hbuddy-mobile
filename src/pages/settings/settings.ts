@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 
 import { SharedProvider } from '../../providers/shared-provider';
+import { HbuddyProvider } from '../../providers/hbuddy-provider';
 
 import { GatewayPage } from '../gateway/gateway';
 import { CamerasPage } from '../cameras/cameras';
@@ -13,24 +14,23 @@ import { CamerasPage } from '../cameras/cameras';
 })
 export class SettingsPage {
 
-  userSetting:any = {notify: true, syncWithCloud: true};
-  currentUser: any;
+  private currentUser: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sharedProvider: SharedProvider) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private sharedProvider: SharedProvider, public hbuddyProvider: HbuddyProvider, private events: Events) {
+      this.currentUser = this.sharedProvider.getCurrentUser();
+      console.log("this.currentUser: >>>> ", this.currentUser)
   }
 
   ionViewDidLoad() {
       console.log('ionViewDidLoad Settings');
-      this.currentUser = this.sharedProvider.getCurrentUser();
       let selectedPlace: any = this.sharedProvider.getSessionData("selectedPlace");
-      this.userSetting.placeId = selectedPlace.id;
-      if(this.currentUser && this.currentUser.userSettings){
-        for(let setting of this.currentUser.userSettings){
-            if(selectedPlace.id == setting.placeId){
-                this.userSetting = setting;
-            }
-        }
+      if(!this.currentUser || !this.currentUser.id || !selectedPlace){
+          this.events.publish("auth:required", new Error("User not found !"));
+          return false;
+      }
+      if(!this.currentUser.userSettings){
+        this.currentUser.userSettings = {notify: true, syncWithCloud: true, placeId: selectedPlace.id};
       }
   }
 
@@ -52,6 +52,21 @@ export class SettingsPage {
   toggleSyncWithCloud(){
       console.log("IN toggleSyncWithCloud:>> ");
       // this.configurations.syncWithCloud = !this.configuration.syncWithCloud;
+  }
+
+  updateSettings(){
+    console.log("IN updateSettings: >> ", this.currentUser.userSettings);
+    this.hbuddyProvider.saveUserSettings(this.currentUser.userSettings).then( savedSettings => {
+      console.log("Saved UserSettings:  ", savedSettings);
+      this.currentUser.userSettings = savedSettings;
+    },
+    error => {
+        if(error.status == 401){
+          this.events.publish("auth:required", error);
+        }else{
+          console.log("ERROR: >>> ", error);
+        }
+    });
   }
 
 }

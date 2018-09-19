@@ -21,6 +21,7 @@ export class AuthProvider {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');
+    this.headers.append('Access-Control-Allow-Origin', '*');    
     this.headers.append("X-IBM-Client-Id", "default");
     this.headers.append("X-IBM-Client-Secret", "SECRET");
     if(!this.accessToken){

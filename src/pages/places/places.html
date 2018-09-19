@@ -34,7 +34,9 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-
+  <p *ngIf="gatewayInfo">
+    Near by Gateway: {{gatewayInfo.gatewayId}}
+  </p>
   <ion-card *ngFor="let place of places" >
       <!-- <img src="../assets/images/room3.jpg"/> -->
       <ion-card-content class="text-left">
@@ -75,6 +77,11 @@
               <ion-label stacked>Gateway Serial No</ion-label>
               <ion-input type="text" [(ngModel)]="selectedPlace.gatewayId"></ion-input>
             </ion-item>
+            <ion-item *ngIf="gatewayInfo">
+              <ion-label stacked>Nearby Gateway</ion-label>
+              <ion-input type="text" [(ngModel)]="gatewayInfo.gatewayId"></ion-input>
+            </ion-item>
+
     				<ion-item>
               <ion-label stacked>Place Title</ion-label>
     					<ion-input type="text" [(ngModel)]="selectedPlace.title"></ion-input>

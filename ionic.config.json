@@ -4,5 +4,12 @@
     "cordova": {}
   },
   "type": "ionic-angular",
-  "pro_id": "e162d291"
+  "typescript": true,
+  "pro_id": "e162d291",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://hbuddy-gateway.local:9000/api"
+    }
+  ]
 }

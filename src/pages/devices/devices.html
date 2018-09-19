@@ -27,9 +27,9 @@
                       <ion-icon name="create"></ion-icon>
                     </button>
                     <!-- <p>{{device.description}}</p> -->
-                    <p>{{device.updatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
+                    <p *ngIf="device.audit && device.audit.modified">{{device.audit.modified | date: 'dd/MM/yyyy H:mm'}}</p>
                   </ion-label>
-                  <ion-toggle [(ngModel)]="device.value" (click)="deviceChanged(board, device);"></ion-toggle>
+                  <ion-toggle (click)="deviceChanged(board, device);"></ion-toggle>
 
               </ion-item>
         </ion-list>

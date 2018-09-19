@@ -117,7 +117,6 @@ export class DevicesPage {
   }
 
   deviceChanged(board, device){
-    console.log("IN deviceChanged: >> ", device);
     if(device.status == 1){
     		device.status = 0;
     		device.deviceValue = 0;
@@ -125,7 +124,7 @@ export class DevicesPage {
     		device.status = 1;
     		device.deviceValue = 1;
     }
-
+    console.log("IN deviceChanged: >> ", device);
     let topic: string = "iot-2/type/" +this.sharedProvider.CONFIG.GATEWAY_TYPE +"/id/"+this.selectedPlace.gatewayId+"/cmd/gateway/fmt/json";
     let msg = {
                 d:{
@@ -148,23 +147,19 @@ export class DevicesPage {
   }
 
   saveDevice(device){
-    for(let board of this.selectedPlaceArea.boards){
-        if(board.uniqueIdentifier == device.parentId){
-            this.hbuddyProvider.saveBoard(board).then( savedBoard => {
-              console.log("Saved Board:  ", savedBoard);
-              this.selectedDevice = {};
-              this.showEditDevice = false;
-              this.showDevices = true;
-            },
-            error => {
-                if(error.status == 401){
-                  this.events.publish("auth:required", error);
-                }else{
-                  console.log("ERROR: >>> ", error);
-                }
-            });
-        }
-    }
+        this.hbuddyProvider.saveDevice(device).then( savedDevice => {
+          console.log("Saved Device:  ", savedDevice);
+          this.selectedDevice = {};
+          this.showEditDevice = false;
+          this.showDevices = true;
+        },
+        error => {
+            if(error.status == 401){
+              this.events.publish("auth:required", error);
+            }else{
+              console.log("ERROR: >>> ", error);
+            }
+        });
   }
 
   dismiss(){

@@ -19,6 +19,15 @@ export class HbuddyProvider {
     this.currentUser = this.sharedProvider.getCurrentUser();
   }
 
+  fetchGatewayInfo(): Promise<any>{
+    let GET_URL: string = this.sharedProvider.CONFIG.GATEWAY_ENDPOINT + ":9000/api/gateway/info";
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.get(GET_URL, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+    .catch(this.handleErrorPromise);
+  }
+
   fetchUserGroups(userObj): Promise<any>{
         if(this.sharedProvider.isDemoAccount()){
             return this.sharedProvider.getDemoData("groups");
@@ -87,6 +96,21 @@ export class HbuddyProvider {
         return this.handleErrorPromise(error);
     });
   }
+
+  fetchUserSettings(userId, placeId){
+      console.log("Find UserSettings for userId: ", userId, ", placeId: ", placeId);
+      let findReq: any = {filter: {where: {and: [{userId: userId}, {placeId: placeId}]}}};
+      let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserSettings?";
+      this.authProvider.setAuthHeaders();
+      this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+      this.reqOptions.params = findReq;
+      return this.http.get(GET_URL, this.reqOptions)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleErrorPromise);
+
+  }
+
 
   fetchPlaceAreas(selectedPlace): Promise<any>{
       if(this.sharedProvider.isDemoAccount()){
@@ -192,6 +216,19 @@ export class HbuddyProvider {
           .catch(this.handleErrorPromise);
   }
 
+  saveUserSettings(settings){
+    let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/UserSettings";
+    if(settings.id){
+      POST_URL = POST_URL + "?id="+settings.id;
+    }
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.put(POST_URL, settings, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
   savePlaceArea(placeArea){
     let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/PlaceAreas";
     if(placeArea.id){
@@ -213,6 +250,19 @@ export class HbuddyProvider {
     this.authProvider.setAuthHeaders();
     this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
     return this.http.put(POST_URL, board, this.reqOptions)
+    .toPromise()
+    .then(this.extractData)
+          .catch(this.handleErrorPromise);
+  }
+
+  saveDevice(device){
+    let POST_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Devices";
+    if(device.id){
+      POST_URL = POST_URL + "?id="+device.id;
+    }
+    this.authProvider.setAuthHeaders();
+    this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
+    return this.http.put(POST_URL, device, this.reqOptions)
     .toPromise()
     .then(this.extractData)
           .catch(this.handleErrorPromise);

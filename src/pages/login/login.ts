@@ -47,14 +47,10 @@ export class LoginPage {
             if(!user.type){
               user.type = "hukam";
             }
-            this.authProvider.fetchUserSettingsById(user.userId, (err, userSettings) => {
-              user.userSettings = userSettings;
-              console.log("\n\nUser with userSettings: >>> ", JSON.stringify(user));
-              this.sharedProvider.setCurrentUser(user);
-              this.updateDeviceRegistrationId();
-              this.sharedProvider.dismissLoading();
-              this.nav.setRoot(PlacesPage, {});
-            });
+            this.sharedProvider.setCurrentUser(user);
+            this.updateDeviceRegistrationId();
+            this.sharedProvider.dismissLoading();
+            this.nav.setRoot(PlacesPage, {});
         }else{
           console.log("No Data for User: >>> ", this.credentials);
         }
@@ -90,9 +86,12 @@ export class LoginPage {
           user.type = "facebook";
         }
 
+        this.syncUserWithBackendApp(user, "facebook", function(err, resp){
+            console.log("syncUserWithBackendApp RESP: >> ", resp);
+        });
+        /*
         user.userId = user.userID;
         console.log("Returned user Obj after Facebook Login: >>> ", JSON.stringify(user));
-
         this.authProvider.setAuthHeaders();
         this.authProvider.fetchUserSettingsById(user.userID, (err, userSettings) => {
           if(err){
@@ -106,6 +105,7 @@ export class LoginPage {
           this.updateDeviceRegistrationId();
           this.nav.setRoot(PlacesPage, {});
         });
+        */
       });
   }
 
@@ -121,6 +121,10 @@ export class LoginPage {
 
      this.authProvider.loginWithThirdParty(payload, (err, userData) => {
        // console.log("\n\nRESP from loginWithThirdParty:>>  ", userData);
+       this.sharedProvider.setCurrentUser(userData.user);
+       this.updateDeviceRegistrationId();
+       this.nav.setRoot(PlacesPage, {});
+       /*
        this.authProvider.setAuthHeaders();
        this.authProvider.fetchUserSettingsById(userData.identity.userId, (err, userSettings) => {
          userData.user.userSettings = userSettings;
@@ -129,6 +133,7 @@ export class LoginPage {
          this.updateDeviceRegistrationId();
          this.nav.setRoot(PlacesPage, {});
        });
+       */
        cb(err, "USER LOGGEDIN SUCCESSFULLY >>>>>>>> ");
      });
 

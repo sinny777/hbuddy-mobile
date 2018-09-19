@@ -17,6 +17,7 @@ export class PlacesPage {
   private showPlaces: boolean = true;
   private showAddUpdatePlace: boolean = false;
   private floors = ["Ground"];
+  private gatewayInfo: any;
 
   constructor(public hbuddyProvider: HbuddyProvider, public menuCtrl: MenuController, public navCtrl: NavController, public sharedProvider: SharedProvider, private events: Events) {
       // menu.enable(true);
@@ -38,6 +39,13 @@ export class PlacesPage {
       this.events.subscribe('Push Notification:received', (message: any) => {
           console.log('notification Message Payload: >> ', message);
       });
+
+      this.fetchGatewayInfo((err, info) =>{
+        this.gatewayInfo = info;
+        console.log("Gateway Info: >>> ", this.gatewayInfo);
+        this.sharedProvider.setSessionData("gatewayInfo", this.gatewayInfo);
+      });
+
       this.menuCtrl.swipeEnable(true, "menu-left");
       if(!this.places || this.places.length == 0){
           this.sharedProvider.presentLoading("Fetching your places...");
@@ -53,6 +61,21 @@ export class PlacesPage {
     this.fetchUserPlaces(true, (err, places) =>{
         this.places = places;
         refresher.complete();
+    });
+  }
+
+  fetchGatewayInfo(cb){
+    this.hbuddyProvider.fetchGatewayInfo().then( info => {
+      console.log("IN fetchGatewayInfo:>>>>>>  ", JSON.stringify(info));
+      cb(null, info);
+    },
+    error => {
+        if(error.status == 401){
+          this.events.publish("auth:required", error);
+          cb(error, null);
+        }else{
+          cb(error, null);
+        }
     });
   }
 
