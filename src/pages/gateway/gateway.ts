@@ -10,10 +10,12 @@ import { BLE } from '@ionic-native/ble';
 export class GatewayPage {
 
   configurations: any = {wifi: {ssid: "", password: ""}};
-  gatewayConnected: boolean = false;
+  bleDeviceConnected: boolean = false;
   bleDevices: any;
+  selectedBLEDevice: any;
   selectedPeripheral: any;
   isScanning: boolean = false;
+  showUpdateWifi: boolean = false;
 
   constructor(private ble: BLE, public navCtrl: NavController, public navParams: NavParams) {
     console.log("IN Gateway Component Constructor ");
@@ -23,7 +25,7 @@ export class GatewayPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Gateway');
-    this.selectedPeripheral = "";
+    this.selectedBLEDevice = "";
     this.ble.isEnabled().then(()=>{
           console.log("Bluetooth is enabled");
           this.startScanning();
@@ -39,27 +41,61 @@ export class GatewayPage {
     console.log("IN startScanning BLE Devices: >>> ");
       this.bleDevices = [];
       this.isScanning = true;
-      this.ble.scan([], 3).subscribe(peripheral => {
-          console.log("SCANNED DEVICE: >>> ", JSON.stringify(peripheral));
-          this.bleDevices.push(peripheral);
+      this.ble.scan([], 3).subscribe(bleDevice => {
+          console.log("SCANNED DEVICE: >>> ", JSON.stringify(bleDevice));
+          this.bleDevices.push(bleDevice);
           this.isScanning = false;
       });
   }
 
-  bleDeviceSelected(){
-    console.log("IN bleDeviceSelected: >> ", this.selectedPeripheral);
-    this.ble.connect(this.selectedPeripheral).subscribe(peripheralData => {
+  connectBoardOnBLE(bleDevice){
+    console.log("IN connectBoardOnBLE: >> ", JSON.stringify(bleDevice));
+    this.ble.connect(bleDevice).subscribe(peripheralData => {
           console.log("BLE Device Connected, ", JSON.stringify(peripheralData));
-          this.gatewayConnected = true;
         },
         peripheralData => {
          console.log('BLE Device Disconnected >>>>', JSON.stringify(peripheralData));
-         this.gatewayConnected = false;
         });
+  }
+
+  showUpdateWifiCard(bleDevice){
+    if(bleDevice && bleDevice.id){
+      this.selectedPeripheral = bleDevice;
+      this.showUpdateWifi = true;
+    }else{
+      this.showUpdateWifi = false;
+    }
   }
 
   updateGatewayWifi(){
     console.log("IN updateGatewayWifi, WiFi credentials: >> ", this.configurations.wifi);
+    console.log("Send WiFi Credentials to: ", this.selectedPeripheral);
+    const serviceUUID = this.selectedPeripheral.characteristics[0].service;
+    const characteristicUUID = this.selectedPeripheral.characteristics[0].characteristic;
+    const data = "{\"ssidPrim\":\"+configurations.wifi.ssid+\",\"pwPrim\":\"+configurations.wifi.password+\",\"ssidSec\":\"hukam\",\"pwSec\":\"1SatnamW\"}";
+
+    this.ble.write(this.selectedBLEDevice.id, serviceUUID, characteristicUUID, this.stringToBytes(data)).then(()=>{
+          console.log("Data sent over BLE");
+          this.showUpdateWifi = false;
+    }).catch(()=>{
+        console.log("Error while sending data over BLE");
+        this.showUpdateWifi = false;
+    });
+
   }
+
+  // ASCII only
+stringToBytes(string) {
+   var array = new Uint8Array(string.length);
+   for (var i = 0, l = string.length; i < l; i++) {
+       array[i] = string.charCodeAt(i);
+    }
+    return array.buffer;
+}
+
+// ASCII only
+bytesToString(buffer) {
+    return String.fromCharCode.apply(null, new Uint8Array(buffer));
+}
 
 }

@@ -26,7 +26,7 @@ ionic platform add ios@4.5.5
 ionic plugin rm phonegap-plugin-push
 ionic plugin add phonegap-plugin-push@2.2.3 --variable SENDER_ID=874807563899 --save
 
-ionic build ios
+ionic cordova build ios
 
 ```
 ```

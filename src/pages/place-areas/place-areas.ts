@@ -56,10 +56,22 @@ export class PlaceAreasPage {
     this.sharedProvider.presentLoading("Fetching place areas...");
     console.log("selectedPlace: >>>> ", JSON.stringify(this.selectedPlace));
     this.getUserSetting((err, settings)  => {
-        if(!settings || !settings.id){
-          settings = {notify: true, syncWithCloud: true, placeId: this.selectedPlace.id};
+      console.log("fetched user settings : >>>> ", settings);
+        if(!settings || settings.length == 0){
+          settings = {
+                      	"userId": this.currentUser.id,
+                      	"placeId": this.selectedPlace.id,
+                      	"type": "MOBILE_APP",
+                      	"config": {
+                      		"notify": true,
+                      		"syncWithCloud": true
+                      	}
+                      };
+          this.currentUser.userSettings = settings;
+        }else{
+          this.currentUser.userSettings = settings[0];
         }
-        this.currentUser.settings = settings;
+
         this.getPlaceAreas(false, (err, placeAreas) =>{
           this.placeAreas = placeAreas;
           this.sharedProvider.dismissLoading();
@@ -121,7 +133,7 @@ export class PlaceAreasPage {
   }
 
   getUserSetting(cb){
-    this.hbuddyProvider.fetchUserSettings(this.currentUser.id, this.selectedPlace.id).then( settings => {
+    this.hbuddyProvider.fetchUserSettings(this.currentUser.userId, this.selectedPlace.id).then( settings => {
       console.log("Fetched UserSettings:  ", settings);
       cb(null, settings);
     },

@@ -162,7 +162,11 @@ export class DevicesPage {
         });
   }
 
-  dismiss(){
+  showAddNewBoard(){
+    console.log("IN showAddNewBoard: >>");
+  }
+
+  cancelEditDevice(){
     this.selectedDevice = {};
     this.showEditDevice = false;
     this.showDevices = true;

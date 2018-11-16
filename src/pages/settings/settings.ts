@@ -30,8 +30,17 @@ export class SettingsPage {
           return false;
       }
       if(!this.currentUser.userSettings){
-        this.currentUser.userSettings = {notify: true, syncWithCloud: true, placeId: selectedPlace.id};
+        this.currentUser.userSettings = {
+                                        	"userId": this.currentUser.id,
+                                        	"placeId": selectedPlace.id,
+                                        	"type": "MOBILE_APP",
+                                        	"config": {
+                                        		"notify": true,
+                                        		"syncWithCloud": true
+                                        	}
+                                        };
       }
+      console.log("UserSetting: >>> ", this.currentUser.userSettings)
   }
 
   showConfigureGateway(){

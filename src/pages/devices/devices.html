@@ -1,11 +1,20 @@
 <ion-header >
   <ion-navbar color="primary">
-    <button ion-button menuToggle icon-only>
-      <ion-icon name='menu'></ion-icon>
-    </button>
+    <ion-buttons start>
+        <button ion-button menuToggle icon-only>
+          <ion-icon name='menu'></ion-icon>
+        </button>
+    </ion-buttons>
+
     <ion-title>
       {{selectedPlaceArea.title}}
     </ion-title>
+
+    <ion-buttons end>
+        <button ion-button icon-only class="icon-circle-small icon-circle-outline" (click)="showAddNewBoard();">
+           <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -13,9 +22,9 @@
 
   <div *ngIf="showDevices">
         <ion-list *ngFor="let board of selectedPlaceArea.boards">
-          <!-- <ion-list-header>
-            List of Devices
-          </ion-list-header> -->
+          <ion-list-header>
+            {{board.uniqueIdentifier}}
+          </ion-list-header>
 
               <ion-item *ngFor="let device of board.devices">
                   <ion-avatar item-left>
@@ -66,7 +75,7 @@
                     </button>
                 </ion-col>
                 <ion-col>
-                    <button ion-button block outline  (click)='dismiss();'>
+                    <button ion-button block outline  (click)='cancelEditDevice();'>
                       Cancel
                     </button>
                 </ion-col>

@@ -13,24 +13,27 @@
 <ion-content padding>
 
   <ion-list>
-    <!-- <ion-list-header>Configurations</ion-list-header> -->
-    <ion-item>
-      <ion-avatar item-left>
-          <ion-icon name="bluetooth" item-left></ion-icon>
-      </ion-avatar>
-      <ion-label class="small">
-        Connect Gateway
-      </ion-label>
-      <ion-select class="small" [(ngModel)]="selectedPeripheral" (ionChange)="bleDeviceSelected();">
-        <ion-option *ngFor="let bleDevice of bleDevices" value="{{bleDevice.id}}">
-            {{bleDevice.name}}
-        </ion-option>
-      </ion-select>
-    </ion-item>
+    <ion-list-header>
+      Available Boards
+    </ion-list-header>
+        <ion-item *ngFor="let bleDevice of bleDevices">
+            <ion-avatar item-left>
+                <ion-icon name="bluetooth"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              {{bleDevice.name}} |
+              <button class="title-btn" ion-button icon-left clear small (click)="showUpdateWifiCard(bleDevice);">
+                <ion-icon name="create"></ion-icon>
+              </button>
+              <!-- <p>{{device.description}}</p> -->
+            </ion-label>
+            <ion-toggle (click)="connectBoardOnBLE(bleDevice);"></ion-toggle>
+
+        </ion-item>
 
   </ion-list>
 
-  <ion-card *ngIf="gatewayConnected" >
+  <ion-card *ngIf="showUpdateWifi">
     <ion-card-header>
       WiFi Credentials
     </ion-card-header>

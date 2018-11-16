@@ -34,7 +34,7 @@
       <ion-label>
         Notifications
       </ion-label>
-      <ion-toggle [(ngModel)]="currentUser.userSettings.notifications" (click)="toggleNotifications();"></ion-toggle>
+      <ion-toggle [(ngModel)]="currentUser.userSettings.config.notify" (click)="toggleNotifications();"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-avatar item-left>
@@ -43,7 +43,7 @@
       <ion-label>
         Sync With Cloud
       </ion-label>
-      <ion-toggle [(ngModel)]="currentUser.userSettings.syncWithCloud" (click)="toggleSyncWithCloud();"></ion-toggle>
+      <ion-toggle [(ngModel)]="currentUser.userSettings.config.syncWithCloud" (click)="toggleSyncWithCloud();"></ion-toggle>
     </ion-item>
 
     <ion-row>
@@ -51,7 +51,7 @@
             <button ion-button block outline  (click)='updateSettings();'>
               Update
             </button>
-        </ion-col>        
+        </ion-col>
     </ion-row>
 
   </ion-list>
