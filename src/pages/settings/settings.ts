@@ -6,6 +6,7 @@ import { HbuddyProvider } from '../../providers/hbuddy-provider';
 
 import { GatewayPage } from '../gateway/gateway';
 import { CamerasPage } from '../cameras/cameras';
+import { BoardsPage } from '../boards/boards';
 
 
 @Component({
@@ -46,6 +47,11 @@ export class SettingsPage {
   showConfigureGateway(){
     console.log("IN showConfigureGateway: >>> ");
     this.navCtrl.push(GatewayPage, {});
+  }
+
+  showConfigureBoards(){
+    console.log("IN showConfigureBoards: >>> ");
+    this.navCtrl.push(BoardsPage, {});
   }
 
   showCameras(){

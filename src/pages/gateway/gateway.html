@@ -21,17 +21,25 @@
                 <ion-icon name="bluetooth"></ion-icon>
             </ion-avatar>
             <ion-label>
-              {{bleDevice.name}} |
-              <button class="title-btn" ion-button icon-left clear small (click)="showUpdateWifiCard(bleDevice);">
-                <ion-icon name="create"></ion-icon>
-              </button>
-              <!-- <p>{{device.description}}</p> -->
+              {{bleDevice.name}}
             </ion-label>
             <ion-toggle (click)="connectBoardOnBLE(bleDevice);"></ion-toggle>
 
+            <ion-card *ngIf="bleDevice.connected">
+              <ion-card-header>
+                BLE Device Configurations
+              </ion-card-header>
+              <ion-card-content>
+                <button class="title-btn" ion-button icon-left clear small (click)="showUpdateWifiCard(bleDevice);">
+                  <ion-icon name="create"></ion-icon>
+                </button>
+                <!-- <p>{{device.description}}</p> -->
+              </ion-card-content>
+            </ion-card>
+
         </ion-item>
 
-  </ion-list>
+    </ion-list>
 
   <ion-card *ngIf="showUpdateWifi">
     <ion-card-header>

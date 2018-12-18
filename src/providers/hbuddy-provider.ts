@@ -47,6 +47,7 @@ export class HbuddyProvider {
     	    				   		             }
                             };
         console.log("In fetchUserGroups, findReq: ", JSON.stringify(findReq));
+        this.authProvider.setAuthHeaders();
         let GET_URL: string = this.sharedProvider.CONFIG.API_BASE_URL + "/Groups?";
         this.reqOptions = new RequestOptions({headers: this.authProvider.headers});
         this.reqOptions.params = findReq;

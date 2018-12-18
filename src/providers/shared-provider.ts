@@ -132,8 +132,10 @@ export class SharedProvider {
 
   public getCurrentUser(){
     this.getStorageData("currentUser", function(currentUser){
+      console.log(currentUser);
       return currentUser;
     });
+    console.log(this.currentUser);
     return this.currentUser;
   }
 

@@ -50,8 +50,9 @@ export class GatewayPage {
 
   connectBoardOnBLE(bleDevice){
     console.log("IN connectBoardOnBLE: >> ", JSON.stringify(bleDevice));
-    this.ble.connect(bleDevice).subscribe(peripheralData => {
+    this.ble.connect(bleDevice.id).subscribe(peripheralData => {
           console.log("BLE Device Connected, ", JSON.stringify(peripheralData));
+          bleDevice.connected = true;
         },
         peripheralData => {
          console.log('BLE Device Disconnected >>>>', JSON.stringify(peripheralData));
@@ -72,9 +73,14 @@ export class GatewayPage {
     console.log("Send WiFi Credentials to: ", this.selectedPeripheral);
     const serviceUUID = this.selectedPeripheral.characteristics[0].service;
     const characteristicUUID = this.selectedPeripheral.characteristics[0].characteristic;
-    const data = "{\"ssidPrim\":\"+configurations.wifi.ssid+\",\"pwPrim\":\"+configurations.wifi.password+\",\"ssidSec\":\"hukam\",\"pwSec\":\"1SatnamW\"}";
-
-    this.ble.write(this.selectedBLEDevice.id, serviceUUID, characteristicUUID, this.stringToBytes(data)).then(()=>{
+    // const data = "{\"ssidPrim\":\"+this.configurations.wifi.ssid+\",\"pwPrim\":\"+configurations.wifi.password+\",\"ssidSec\":\"hukam\",\"pwSec\":\"1SatnamW\"}";
+    const jsonData = {
+      "ssidPrim": this.configurations.wifi.ssid,
+      "pwPrim": this.configurations.wifi.password,
+      "ssidSec": "hukam",
+      "pwSec": "1SatnamW"
+    }
+    this.ble.write(this.selectedBLEDevice.id, serviceUUID, characteristicUUID, this.stringToBytes(JSON.stringify(jsonData))).then(()=>{
           console.log("Data sent over BLE");
           this.showUpdateWifi = false;
     }).catch(()=>{

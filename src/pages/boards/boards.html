@@ -1,0 +1,85 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only >
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title >
+      Boards Configurations
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngIf="showBoards">
+     <ion-refresher (ionRefresh)="doRefresh($event)">
+         <ion-refresher-content></ion-refresher-content>
+     </ion-refresher>
+
+       <ion-card *ngFor="let bleBoard of bleBoards">
+         <ion-card-content class="text-left">
+           <ion-card-title>
+             {{bleBoard.name}}
+             <!-- <span class="small font-weight-small right">
+               <ion-col col-3 right *ngIf="bleBoard.connected"><ion-icon name="wifi" color="primary"></ion-icon></ion-col>
+               <ion-col col-3 right *ngIf="!bleBoard.connected"><ion-icon name="wifi" color="danger"></ion-icon></ion-col>
+             </span> -->
+           </ion-card-title>
+
+           BLE Connected: {{bleBoard.connected}}
+
+         </ion-card-content>
+
+             <ion-row>
+               <ion-col col-6>
+                 <button ion-button icon-center clear class="card-bottom-btn left" (click)="toggleBLEForBoard(bleBoard);">
+                   <ion-icon *ngIf="bleBoard.connected" color="primary" name="bluetooth"></ion-icon>
+                   <ion-icon *ngIf="!bleBoard.connected" color="danger" name="bluetooth"></ion-icon>
+                 </button>
+               </ion-col>
+               <ion-col col-6>
+                 <button ion-button icon-center clear class="card-bottom-btn right" (click)="showUpdateWifiCard(bleBoard);">
+                   <ion-icon name="wifi"></ion-icon>
+                 </button>
+               </ion-col>
+             </ion-row>
+
+     </ion-card>
+ </div>
+
+
+  <ion-card *ngIf="showUpdateWifi">
+    <ion-card-header>
+      WiFi Credentials
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line>
+        <ion-item>
+          <ion-input type="text" placeholder="WiFi SSID" [(ngModel)]="configurations.wifi.ssid"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" placeholder="WiFi Password" [(ngModel)]="configurations.wifi.password"></ion-input>
+        </ion-item>
+        
+        <ion-row>
+            <ion-col>
+                <button ion-button block outline  (click)='updateGatewayWifi();'>
+                  Submit
+                </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button block outline  (click)='cancelUpdateWifi();'>
+                  Cancel
+                </button>
+            </ion-col>
+        </ion-row>
+
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <ion-spinner *ngIf="isScanning==true" name="circles"></ion-spinner> -->
+
+</ion-content>

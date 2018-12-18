@@ -21,14 +21,14 @@ export class AuthProvider {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');
-    this.headers.append('Access-Control-Allow-Origin', '*');    
+    this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers.append("X-IBM-Client-Id", "default");
     this.headers.append("X-IBM-Client-Secret", "SECRET");
     if(!this.accessToken){
       let currentUser = this.sharedProvider.getCurrentUser();
       if(currentUser){
-        if(currentUser.identity){
-            this.accessToken = currentUser.identity.id;
+        if(currentUser.token){
+            this.accessToken = currentUser.token;
         }else if(currentUser.id){
           this.accessToken = currentUser.id;
         }
@@ -61,6 +61,9 @@ export class AuthProvider {
             delete user["user"];
           }
           this.accessToken = user.id;
+          if(user){
+            user.token = this.accessToken;
+          }
           this.sharedProvider.setCurrentUser(user);
           cb(null, user);
       }, (err) => {
@@ -105,7 +108,11 @@ export class AuthProvider {
         .subscribe(resp => {
             var user = resp.json();
             this.accessToken = user.identity.id;
+            if(user && user.user){
+              user.user.token = this.accessToken;
+            }
             this.sharedProvider.setCurrentUser(user.user);
+            this.setAuthHeaders();
             cb(null, user);
         }, (err) => {
           console.log("Error in loginWithThirdParty:>> ", err);
